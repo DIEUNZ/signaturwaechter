@@ -24,7 +24,7 @@ labyMod {
 
     addonInfo {
         namespace = "sigguard"
-        displayName = "SignaturWächter"
+        displayName = "AH-Fake-Warner"
         author = "bjarne"
         description = "Schützt im GrieferGames-Auktionshaus vor dem Kauf gefälschter Perks, Prefixe, Suffixe und anderer Admin-Items: Das Addon erkennt Fake-Signaturen, warnt dich und erinnert an ablaufende Auktionen. Arbeitet nur lokal."
         minecraftVersion = "1.8.9,1.12.2,26.3"

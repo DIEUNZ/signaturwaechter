@@ -70,7 +70,7 @@
       }
     },
     "messages": {
-      "prefix": "[SignaturWächter]",
+      "prefix": "[AH-Fake-Warner]",
       "disabled": "Das Addon ist deaktiviert.",
       "warning": {
         "fake": "FÄLSCHUNG – imitiert %s",

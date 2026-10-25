@@ -34,7 +34,7 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
     this.registerListener(this.reminders);
     this.registerCommand(new AuctionTimerCommand(this));
 
-    this.logger().info("SignaturWächter aktiviert");
+    this.logger().info("AH-Fake-Warner aktiviert");
   }
 
   @Override

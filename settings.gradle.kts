@@ -1,4 +1,4 @@
-rootProject.name = "griefergames-signaturwaechter"
+rootProject.name = "ah-fake-warner"
 
 pluginManagement {
     repositories {

@@ -1,4 +1,4 @@
-# GG-Auktionshaus-Fake-Warner (LabyMod 4 Addon für GrieferGames)
+# AH-Fake-Warner – GG-Auktionshaus-Fake-Warner (LabyMod 4 Addon für GrieferGames)
 
 ![GG-Auktionshaus-Fake-Warner](store-assets/thumbnail-1280x720.png)
 
@@ -19,7 +19,7 @@ Befehle: `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie.
 
 ## Installation
 
-1. Die neueste `griefergames-signaturwaechter-release.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
+1. Die neueste `ah-fake-warner-release.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
 2. In den Ordner `LabyMod/addons` legen (im Minecraft-Verzeichnis, `.minecraft/labymod-neo/addons`).
 3. Spiel neu starten.
 

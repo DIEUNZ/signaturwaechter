@@ -33,7 +33,7 @@ public final class Messages {
     return Component.text(symbol + " ", color).append(tr(key, color, arguments));
   }
 
-  /** Chat-Nachricht mit "[SignaturWächter]"-Präfix. */
+  /** Chat-Nachricht mit "[AH-Fake-Warner]"-Präfix. */
   public static Component chat(String key, TextColor color, Object... arguments) {
     return Component.translatable(PREFIX + "prefix", NamedTextColor.DARK_AQUA)
         .append(Component.text(" "))
