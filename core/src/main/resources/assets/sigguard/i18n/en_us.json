@@ -4,9 +4,6 @@
       "enabled": {
         "name": "Enabled"
       },
-      "signature": {
-        "name": "Signature check"
-      },
       "whitelist": {
         "name": "Trusted signers",
         "description": "Names of genuine signers, comma separated. Default is AbgegrieftHD (official admin items). While the list is empty, no signature is checked."
@@ -25,9 +22,6 @@
         "name": "Signature pattern (regex)",
         "description": "Group 1 = name, group 2 = date"
       },
-      "reminder": {
-        "name": "Auction reminder"
-      },
       "reminderEnabled": {
         "name": "Reminders enabled"
       },
@@ -42,9 +36,6 @@
         "name": "Suggest timer in tooltip",
         "description": "Shows on auctions which key sets a reminder"
       },
-      "highlight": {
-        "name": "Slot colors"
-      },
       "highlightReminder": {
         "name": "Color slots with a timer"
       },
@@ -53,10 +44,29 @@
       },
       "highlightBid": {
         "name": "Color slots with your bid",
-        "description": "Detected when your player name appears in the auction part of the tooltip (e.g. as highest bidder)"
+        "description": "Detected when you are the highest bidder or have set a bid limit"
       },
       "bidColor": {
         "name": "Color: your bid"
+      },
+      "header": {
+        "signature": {
+          "name": "Signature check"
+        },
+        "reminder": {
+          "name": "Auction reminder"
+        },
+        "highlight": {
+          "name": "Slot colors"
+        },
+        "support": {
+          "name": "Support"
+        }
+      },
+      "openDiscord": {
+        "name": "Help & ideas",
+        "description": "Opens the support Discord for questions, bugs and ideas",
+        "text": "Join Discord"
       }
     },
     "messages": {

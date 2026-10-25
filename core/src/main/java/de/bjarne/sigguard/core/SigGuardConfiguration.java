@@ -3,8 +3,10 @@ package de.bjarne.sigguard.core;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import java.util.ArrayList;
 import java.util.List;
+import net.labymod.api.Laby;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.key.Key;
+import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.ButtonSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget.KeyBindSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
@@ -14,9 +16,12 @@ import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.Color;
+import net.labymod.api.util.MethodOrder;
 
 @ConfigName("settings")
 public class SigGuardConfiguration extends AddonConfig {
+
+  private static final String DISCORD_URL = "https://discord.gg/sCex8JNTGS";
 
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
@@ -69,6 +74,15 @@ public class SigGuardConfiguration extends AddonConfig {
   @ColorPickerSetting(alpha = true)
   private final ConfigProperty<Color> bidColor =
       new ConfigProperty<>(Color.ofRGB(40, 200, 60, 150));
+
+  // --- Support ---
+  /** Öffnet den Support-Discord (mit Rückfrage von LabyMod, bevor der Link aufgeht). */
+  @SettingSection("support")
+  @MethodOrder(after = "bidColor")
+  @ButtonSetting
+  public void openDiscord() {
+    Laby.labyAPI().minecraft().chatExecutor().openUrl(DISCORD_URL, true);
+  }
 
   @Override
   public ConfigProperty<Boolean> enabled() {

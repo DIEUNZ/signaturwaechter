@@ -4,9 +4,6 @@
       "enabled": {
         "name": "Aktiviert"
       },
-      "signature": {
-        "name": "Signaturprüfung"
-      },
       "whitelist": {
         "name": "Vertrauenswürdige Signierer",
         "description": "Namen echter Signierer, durch Komma getrennt. Standard ist AbgegrieftHD (offizielle Admin-Items). Solange die Liste leer ist, wird keine Signatur geprüft."
@@ -25,9 +22,6 @@
         "name": "Signatur-Muster (Regex)",
         "description": "Gruppe 1 = Name, Gruppe 2 = Datum"
       },
-      "reminder": {
-        "name": "Auktions-Erinnerung"
-      },
       "reminderEnabled": {
         "name": "Erinnerungen aktiv"
       },
@@ -42,9 +36,6 @@
         "name": "Timer im Tooltip vorschlagen",
         "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"
       },
-      "highlight": {
-        "name": "Slot-Farben"
-      },
       "highlightReminder": {
         "name": "Slots mit Timer einfärben"
       },
@@ -53,10 +44,29 @@
       },
       "highlightBid": {
         "name": "Slots mit eigenem Gebot einfärben",
-        "description": "Erkannt, wenn dein Spielername im Auktionsteil des Tooltips steht (z. B. als Höchstbietender)"
+        "description": "Wird erkannt, wenn du aktuell Höchstbietender bist oder ein Gebotslimit gesetzt hast"
       },
       "bidColor": {
         "name": "Farbe: eigenes Gebot"
+      },
+      "header": {
+        "signature": {
+          "name": "Signaturprüfung"
+        },
+        "reminder": {
+          "name": "Auktions-Erinnerung"
+        },
+        "highlight": {
+          "name": "Slot-Farben"
+        },
+        "support": {
+          "name": "Support"
+        }
+      },
+      "openDiscord": {
+        "name": "Hilfe & Wünsche",
+        "description": "Öffnet den Support-Discord für Fragen, Fehler und Ideen",
+        "text": "Zum Discord"
       }
     },
     "messages": {
