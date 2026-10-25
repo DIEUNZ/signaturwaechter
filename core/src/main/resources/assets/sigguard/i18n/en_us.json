@@ -53,6 +53,57 @@
         "name": "Export as CSV",
         "text": "Export",
         "description": "Writes all offers to labymod-neo/configs/sigguard (also via /angebote export)"
+      },
+      "highlight": {
+        "name": "Slot colors"
+      },
+      "highlightReminder": {
+        "name": "Color slots with a timer"
+      },
+      "reminderColor": {
+        "name": "Color: timer set"
+      },
+      "highlightBid": {
+        "name": "Color slots with your bid",
+        "description": "Detected when your player name appears in the auction part of the tooltip (e.g. as highest bidder)"
+      },
+      "bidColor": {
+        "name": "Color: your bid"
+      }
+    },
+    "messages": {
+      "prefix": "[SignaturWächter]",
+      "disabled": "The addon is disabled.",
+      "warning": {
+        "fake": "⚠ FAKE – imitates %s",
+        "suspect": "⚠ Possible fake – similar to %s",
+        "chat": "%s: signed by %s"
+      },
+      "hint": {
+        "set": "⏰ Reminder set for %s – [%s] to remove",
+        "endingSoon": "⏰ Ending soon (approx. %s)",
+        "offerAtEnd": "⏰ [%s] Remind at end (ends approx. %s)",
+        "offer": "⏰ [%s] Remind %s min before end (ends approx. %s)"
+      },
+      "reminder": {
+        "title": "Auction reminder",
+        "noTime": "No remaining time found in the tooltip of \"%s\".",
+        "removed": "Reminder for \"%s\" removed.",
+        "set": "Reminder set: \"%s\" ends at %s, reminder at %s.",
+        "due": "Auction \"%s\" ends in %s min.",
+        "dueWithBid": "Auction \"%s\" ends in %s min. (bid %s)",
+        "cleared": "%s reminder(s) cleared.",
+        "none": "No active reminders.",
+        "entry": "• %s – ends %s, reminder %s",
+        "usage": "Usage: /aht list | /aht clear"
+      },
+      "offers": {
+        "empty": "No offers recorded yet. Open the auction house and browse through it.",
+        "exported": "%s offers exported: %s",
+        "exportFailed": "Export failed: %s",
+        "count": "%s offers stored in %s",
+        "cleared": "%s offers deleted.",
+        "usage": "Usage: /angebote export | anzahl | leeren"
       }
     }
   }

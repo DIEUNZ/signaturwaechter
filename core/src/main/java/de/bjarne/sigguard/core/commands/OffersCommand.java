@@ -1,9 +1,10 @@
 package de.bjarne.sigguard.core.commands;
 
+import de.bjarne.sigguard.core.Messages;
+import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.offers.OfferRecorder;
 import java.util.List;
 import net.labymod.api.client.chat.command.Command;
-import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 
 /**
@@ -11,25 +12,29 @@ import net.labymod.api.client.component.format.NamedTextColor;
  */
 public class OffersCommand extends Command {
 
-  private final OfferRecorder offers;
+  private final SigGuardAddon addon;
 
-  public OffersCommand(OfferRecorder offers) {
+  public OffersCommand(SigGuardAddon addon) {
     super("angebote");
-    this.offers = offers;
+    this.addon = addon;
   }
 
   @Override
   public boolean execute(String prefix, String[] arguments) {
+    if (!this.addon.configuration().enabled().get()) {
+      this.displayMessage(Messages.chat("disabled", NamedTextColor.RED));
+      return true;
+    }
+
+    OfferRecorder offers = this.addon.offers();
     String action = arguments.length == 0 ? "anzahl" : arguments[0].toLowerCase();
     switch (action) {
-      case "export" -> this.offers.export();
-      case "anzahl" -> this.displayMessage(Component.text(
-          this.offers.count() + " Angebote gespeichert in " + this.offers.directory(),
-          NamedTextColor.GRAY));
-      case "leeren" -> this.displayMessage(Component.text(
-          this.offers.clear() + " Angebote gelöscht.", NamedTextColor.GRAY));
-      default -> this.displayMessage(Component.text(
-          "Benutzung: /angebote export | anzahl | leeren", NamedTextColor.RED));
+      case "export" -> offers.export();
+      case "anzahl" -> this.displayMessage(Messages.chat("offers.count", NamedTextColor.GRAY,
+          offers.count(), offers.directory()));
+      case "leeren" -> this.displayMessage(
+          Messages.chat("offers.cleared", NamedTextColor.GRAY, offers.clear()));
+      default -> this.displayMessage(Messages.chat("offers.usage", NamedTextColor.RED));
     }
     return true;
   }

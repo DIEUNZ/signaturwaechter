@@ -2,6 +2,7 @@ package de.bjarne.sigguard.core.listener;
 
 import de.bjarne.sigguard.core.ItemSignatureService;
 import de.bjarne.sigguard.core.ItemSignatureService.Check;
+import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.SigGuardConfiguration;
 import de.bjarne.sigguard.core.detect.DetectionResult;
@@ -74,24 +75,23 @@ public class TooltipListener {
       return;
     }
 
-    String keyName = "[" + key.getName() + "]";
+    String keyName = key.getName();
     Optional<Reminder> existing =
         this.addon.reminders().find(AuctionTooltipParser.stableKey(plain));
     Component hint;
     if (existing.isPresent()) {
-      hint = Component.text("⏰ Erinnerung gesetzt für "
-          + ReminderManager.format(existing.get().remindAt())
-          + " – " + keyName + " zum Entfernen", NamedTextColor.GREEN);
+      hint = Messages.tr("hint.set", NamedTextColor.GREEN,
+          ReminderManager.format(existing.get().remindAt()), keyName);
     } else {
-      long endsAt = System.currentTimeMillis() + remaining.get().toMillis();
+      String endsAt = ReminderManager.format(
+          System.currentTimeMillis() + remaining.get().toMillis());
       int lead = config.reminderLeadMinutes().get();
-      String end = "endet ca. " + ReminderManager.format(endsAt);
       if (remaining.get().compareTo(Duration.ofMinutes(lead)) <= 0) {
-        hint = Component.text("⏰ Endet gleich (" + end + ")", NamedTextColor.YELLOW);
+        hint = Messages.tr("hint.endingSoon", NamedTextColor.YELLOW, endsAt);
+      } else if (lead == 0) {
+        hint = Messages.tr("hint.offerAtEnd", NamedTextColor.AQUA, keyName, endsAt);
       } else {
-        String when = lead == 0 ? "bei Ablauf" : lead + " Min. vor Ende";
-        hint = Component.text("⏰ " + keyName + " Erinnern " + when + " (" + end + ")",
-            NamedTextColor.AQUA);
+        hint = Messages.tr("hint.offer", NamedTextColor.AQUA, keyName, lead, endsAt);
       }
     }
 
@@ -100,10 +100,8 @@ public class TooltipListener {
   }
 
   public static Component warningLine(DetectionResult result) {
-    String text = result.verdict() == SignatureVerdict.FAKE
-        ? "⚠ FÄLSCHUNG – imitiert " + result.matchedName()
-        : "⚠ Mögliche Fälschung – ähnlich zu " + result.matchedName();
-    return Component.text(text, NamedTextColor.RED);
+    String key = result.verdict() == SignatureVerdict.FAKE ? "warning.fake" : "warning.suspect";
+    return Messages.tr(key, NamedTextColor.RED, result.matchedName());
   }
 
   // Pro Item (Name + Signatur + Datum) nur einmal im Chat warnen
@@ -117,9 +115,9 @@ public class TooltipListener {
       return;
     }
 
-    this.addon.displayMessage(Component.text("[SignaturWächter] ", NamedTextColor.DARK_RED)
-        .append(Component.text(itemPlain + ": signiert von " + check.signature().name()
-            + " ", NamedTextColor.GOLD))
+    this.addon.displayMessage(Messages.chat("warning.chat", NamedTextColor.GOLD,
+            itemPlain, check.signature().name())
+        .append(Component.text(" "))
         .append(warningLine(check.result())));
   }
 }

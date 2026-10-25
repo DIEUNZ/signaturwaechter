@@ -1,12 +1,12 @@
 package de.bjarne.sigguard.core.listener;
 
+import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.HoverTracker.Hovered;
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
-import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
@@ -43,9 +43,7 @@ public class ReminderKeyListener {
     String itemName = lines.get(0);
     Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(lines);
     if (remaining.isEmpty()) {
-      this.addon.displayMessage(Component.text(
-          "[SignaturWächter] Keine Restzeit im Tooltip von „" + itemName + "“ gefunden.",
-          NamedTextColor.RED));
+      this.addon.displayMessage(Messages.chat("reminder.noTime", NamedTextColor.RED, itemName));
       return;
     }
 

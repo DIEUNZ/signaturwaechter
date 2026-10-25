@@ -1,5 +1,6 @@
 package de.bjarne.sigguard.core.detect;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -16,11 +17,18 @@ public final class SignatureDetector {
   private final Map<String, DetectionResult> cache = new ConcurrentHashMap<>();
 
   public SignatureDetector(List<String> whitelist, int threshold) {
-    this.whitelist = whitelist.stream()
-        .map(String::trim)
-        .filter(name -> !name.isEmpty())
-        .toList();
-    this.normalizedWhitelist = this.whitelist.stream().map(NameNormalizer::normalize).toList();
+    // Schleifen statt Streams (LabyMod-Richtlinie)
+    List<String> names = new ArrayList<>(whitelist.size());
+    List<String> normalized = new ArrayList<>(whitelist.size());
+    for (String name : whitelist) {
+      String trimmed = name.trim();
+      if (!trimmed.isEmpty()) {
+        names.add(trimmed);
+        normalized.add(NameNormalizer.normalize(trimmed));
+      }
+    }
+    this.whitelist = List.copyOf(names);
+    this.normalizedWhitelist = List.copyOf(normalized);
     this.threshold = Math.max(0, threshold);
   }
 

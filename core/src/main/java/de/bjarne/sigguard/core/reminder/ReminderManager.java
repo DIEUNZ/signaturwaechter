@@ -1,5 +1,6 @@
 package de.bjarne.sigguard.core.reminder;
 
+import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import java.time.Duration;
 import java.time.Instant;
@@ -39,7 +40,7 @@ public class ReminderManager {
   /** Legt eine Erinnerung an oder entfernt sie, falls es für das Item schon eine gibt. */
   public synchronized void toggle(String key, String itemName, String bid, Duration remaining) {
     if (this.reminders.removeIf(reminder -> reminder.key().equals(key))) {
-      this.info("Erinnerung für „" + itemName + "“ entfernt.");
+      this.addon.displayMessage(Messages.chat("reminder.removed", NamedTextColor.GRAY, itemName));
       return;
     }
 
@@ -49,12 +50,17 @@ public class ReminderManager {
     long remindAt = Math.max(now, endsAt - lead);
     this.reminders.add(new Reminder(key, itemName, bid, endsAt, remindAt));
 
-    this.info("Erinnerung gesetzt: „" + itemName + "“ endet um " + format(endsAt)
-        + ", Erinnerung um " + format(remindAt) + ".");
+    this.addon.displayMessage(Messages.chat("reminder.set", NamedTextColor.GRAY,
+        itemName, format(endsAt), format(remindAt)));
   }
 
   public synchronized Optional<Reminder> find(String key) {
-    return this.reminders.stream().filter(reminder -> reminder.key().equals(key)).findFirst();
+    for (Reminder reminder : this.reminders) {
+      if (reminder.key().equals(key)) {
+        return Optional.of(reminder);
+      }
+    }
+    return Optional.empty();
   }
 
   public synchronized List<Reminder> reminders() {
@@ -74,6 +80,8 @@ public class ReminderManager {
     }
 
     List<Reminder> due = new ArrayList<>();
+    boolean enabled = this.addon.configuration().enabled().get()
+        && this.addon.configuration().reminderEnabled().get();
     synchronized (this) {
       long now = System.currentTimeMillis();
       Iterator<Reminder> iterator = this.reminders.iterator();
@@ -85,27 +93,28 @@ public class ReminderManager {
         }
       }
     }
-    due.forEach(this::fire);
+    // Bei deaktiviertem Addon fällige Erinnerungen still verwerfen statt nachträglich auszulösen
+    if (enabled) {
+      for (Reminder reminder : due) {
+        this.fire(reminder);
+      }
+    }
   }
 
   private void fire(Reminder reminder) {
     long minutesLeft = Math.max(0, Math.round(
         (reminder.endsAt() - System.currentTimeMillis()) / 60_000.0));
-    String text = "Auktion „" + reminder.itemName() + "“ endet in " + minutesLeft + " Min."
-        + (reminder.bid() == null ? "" : " (Gebot " + reminder.bid() + ")");
+    Component text = reminder.bid() == null
+        ? Messages.tr("reminder.due", NamedTextColor.YELLOW, reminder.itemName(), minutesLeft)
+        : Messages.tr("reminder.dueWithBid", NamedTextColor.YELLOW,
+            reminder.itemName(), minutesLeft, reminder.bid());
 
-    this.addon.displayMessage(Component.text("⏰ ", NamedTextColor.GOLD)
-        .append(Component.text(text, NamedTextColor.YELLOW)));
+    this.addon.displayMessage(Component.text("⏰ ", NamedTextColor.GOLD).append(text));
     Laby.labyAPI().notificationController().push(Notification.builder()
-        .title(Component.text("Auktions-Erinnerung"))
-        .text(Component.text(text))
+        .title(Messages.tr("reminder.title", NamedTextColor.WHITE))
+        .text(text)
         .build());
     Laby.labyAPI().minecraft().sounds().playSound(SOUND, 1F, 1F);
-  }
-
-  private void info(String message) {
-    this.addon.displayMessage(Component.text("[SignaturWächter] ", NamedTextColor.DARK_AQUA)
-        .append(Component.text(message, NamedTextColor.GRAY)));
   }
 
   public static String format(long epochMillis) {

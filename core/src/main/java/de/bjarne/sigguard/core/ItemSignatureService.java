@@ -4,12 +4,14 @@ import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.SignatureDetector;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import de.bjarne.sigguard.core.extract.SignatureExtractor.Signature;
+import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.WeakHashMap;
+import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.serializer.plain.PlainTextComponentSerializer;
 import net.labymod.api.client.world.item.ItemStack;
@@ -51,7 +53,14 @@ public class ItemSignatureService {
       this.computingLines = true;
       try {
         List<Component> lines = stack.getTooltipLines(false);
-        return new Analysis(toPlain(lines), this.check(lines));
+        List<String> plain = toPlain(lines);
+        boolean auction = AuctionTooltipParser.isAuction(plain);
+        return new Analysis(
+            plain,
+            this.check(lines),
+            auction ? AuctionTooltipParser.stableKey(plain) : null,
+            auction && AuctionTooltipParser.mentionsPlayerInAuction(
+                plain, Laby.labyAPI().getName()));
       } finally {
         this.computingLines = false;
       }
@@ -95,10 +104,17 @@ public class ItemSignatureService {
   }
 
   /**
-   * @param lines Tooltip als reiner Text
-   * @param check Signaturprüfung, falls eine Signatur gefunden wurde
+   * @param lines      Tooltip als reiner Text
+   * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
+   * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
+   * @param ownBid     ob der eigene Name im Auktionsteil steht (z. B. Höchstbietender)
    */
-  public record Analysis(List<String> lines, Optional<Check> check) {
+  public record Analysis(
+      List<String> lines,
+      Optional<Check> check,
+      String auctionKey,
+      boolean ownBid
+  ) {
 
     public boolean isWarning() {
       return this.check.map(value -> value.result().verdict().isWarning()).orElse(false);

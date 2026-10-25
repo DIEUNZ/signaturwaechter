@@ -70,6 +70,23 @@ class AuctionTooltipParserTest {
   }
 
   @Test
+  void eigenesGebotErkennen() {
+    List<String> withBid = List.of(
+        "+1 Clan-Home (Item)",
+        "Signiert von DIEUNZ am 01.06.2026",
+        "$ | Aktuelles Gebot:",
+        "60.000$",
+        "Höchstbietender: §aDIEUNZ");
+    assertTrue(AuctionTooltipParser.mentionsPlayerInAuction(withBid, "dieunz"));
+    // Name nur in der Signatur → kein Gebot
+    assertTrue(!AuctionTooltipParser.mentionsPlayerInAuction(withBid.subList(0, 4), "DIEUNZ"));
+    // Teilwort zählt nicht
+    assertTrue(!AuctionTooltipParser.mentionsPlayerInAuction(
+        List.of("Aktuelles Gebot: 5$", "Höchstbietender: DIEUNZ_2"), "DIEUNZ"));
+    assertTrue(!AuctionTooltipParser.mentionsPlayerInAuction(TOOLTIP, ""));
+  }
+
+  @Test
   void keineZeit() {
     assertTrue(AuctionTooltipParser.parseRemaining(List.of("Frost-Schrift")).isEmpty());
     assertTrue(AuctionTooltipParser.parseDuration("bald").isEmpty());

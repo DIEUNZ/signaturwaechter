@@ -1,5 +1,6 @@
 package de.bjarne.sigguard.core.offers;
 
+import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.ItemSignatureService;
 import de.bjarne.sigguard.core.ItemSignatureService.Analysis;
 import de.bjarne.sigguard.core.SigGuardAddon;
@@ -17,7 +18,6 @@ import java.util.concurrent.Executors;
 import net.labymod.api.Constants;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
-import net.labymod.api.client.component.format.TextColor;
 import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
@@ -75,12 +75,12 @@ public class OfferRecorder {
 
     Analysis analysis = this.service.analyze(stack);
     List<String> lines = analysis.lines();
-    if (lines.isEmpty() || !AuctionTooltipParser.isAuction(lines)) {
+    if (analysis.auctionKey() == null || lines.isEmpty()) {
       return;
     }
 
     this.book.upsert(new OfferRecord(
-        AuctionTooltipParser.stableKey(lines),
+        analysis.auctionKey(),
         System.currentTimeMillis(),
         stack.getIdentifier().toString(),
         lines.get(0),
@@ -117,8 +117,7 @@ public class OfferRecorder {
   public void export() {
     List<OfferRecord> snapshot = this.book.snapshot();
     if (snapshot.isEmpty()) {
-      this.message("Noch keine Angebote aufgezeichnet. Öffne das Auktionshaus und blättere durch.",
-          NamedTextColor.RED);
+      this.message(Messages.chat("offers.empty", NamedTextColor.RED));
       return;
     }
 
@@ -126,11 +125,12 @@ public class OfferRecorder {
     this.io.execute(() -> {
       try {
         Path file = this.storage.export(snapshot, LocalDateTime.now(), ZoneId.systemDefault());
-        this.message(snapshot.size() + " Angebote exportiert: "
-            + file.toAbsolutePath().normalize(), NamedTextColor.GREEN);
+        this.message(Messages.chat("offers.exported", NamedTextColor.GREEN,
+            snapshot.size(), file.toAbsolutePath().normalize()));
       } catch (IOException exception) {
         this.addon.logger().warn("CSV-Export fehlgeschlagen", exception);
-        this.message("Export fehlgeschlagen: " + exception.getMessage(), NamedTextColor.RED);
+        this.message(Messages.chat("offers.exportFailed", NamedTextColor.RED,
+            exception.getMessage()));
       }
     });
   }
@@ -150,9 +150,9 @@ public class OfferRecorder {
     return this.storage.directory().toAbsolutePath().normalize();
   }
 
-  private void message(String text, TextColor color) {
-    this.addon.labyAPI().minecraft().executeOnRenderThread(() -> this.addon.displayMessage(
-        Component.text("[SignaturWächter] ", NamedTextColor.DARK_AQUA)
-            .append(Component.text(text, color))));
+  // Chat-Ausgaben aus dem IO-Thread zurück auf den Render-Thread holen
+  private void message(Component message) {
+    this.addon.labyAPI().minecraft().executeOnRenderThread(
+        () -> this.addon.displayMessage(message));
   }
 }

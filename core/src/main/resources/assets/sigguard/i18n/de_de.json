@@ -53,6 +53,57 @@
         "name": "Als CSV exportieren",
         "text": "Exportieren",
         "description": "Schreibt alle Angebote nach labymod-neo/configs/sigguard (auch per /angebote export)"
+      },
+      "highlight": {
+        "name": "Slot-Farben"
+      },
+      "highlightReminder": {
+        "name": "Slots mit Timer einfärben"
+      },
+      "reminderColor": {
+        "name": "Farbe: Timer gesetzt"
+      },
+      "highlightBid": {
+        "name": "Slots mit eigenem Gebot einfärben",
+        "description": "Erkannt, wenn dein Spielername im Auktionsteil des Tooltips steht (z. B. als Höchstbietender)"
+      },
+      "bidColor": {
+        "name": "Farbe: eigenes Gebot"
+      }
+    },
+    "messages": {
+      "prefix": "[SignaturWächter]",
+      "disabled": "Das Addon ist deaktiviert.",
+      "warning": {
+        "fake": "⚠ FÄLSCHUNG – imitiert %s",
+        "suspect": "⚠ Mögliche Fälschung – ähnlich zu %s",
+        "chat": "%s: signiert von %s"
+      },
+      "hint": {
+        "set": "⏰ Erinnerung gesetzt für %s – [%s] zum Entfernen",
+        "endingSoon": "⏰ Endet gleich (ca. %s)",
+        "offerAtEnd": "⏰ [%s] Erinnern bei Ablauf (endet ca. %s)",
+        "offer": "⏰ [%s] Erinnern %s Min. vor Ende (endet ca. %s)"
+      },
+      "reminder": {
+        "title": "Auktions-Erinnerung",
+        "noTime": "Keine Restzeit im Tooltip von „%s“ gefunden.",
+        "removed": "Erinnerung für „%s“ entfernt.",
+        "set": "Erinnerung gesetzt: „%s“ endet um %s, Erinnerung um %s.",
+        "due": "Auktion „%s“ endet in %s Min.",
+        "dueWithBid": "Auktion „%s“ endet in %s Min. (Gebot %s)",
+        "cleared": "%s Erinnerung(en) gelöscht.",
+        "none": "Keine Erinnerungen aktiv.",
+        "entry": "• %s – endet %s, Erinnerung %s",
+        "usage": "Benutzung: /aht list | /aht clear"
+      },
+      "offers": {
+        "empty": "Noch keine Angebote aufgezeichnet. Öffne das Auktionshaus und blättere durch.",
+        "exported": "%s Angebote exportiert: %s",
+        "exportFailed": "Export fehlgeschlagen: %s",
+        "count": "%s Angebote gespeichert in %s",
+        "cleared": "%s Angebote gelöscht.",
+        "usage": "Benutzung: /angebote export | anzahl | leeren"
       }
     }
   }

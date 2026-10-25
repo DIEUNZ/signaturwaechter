@@ -4,6 +4,7 @@ import de.bjarne.sigguard.core.commands.AuctionTimerCommand;
 import de.bjarne.sigguard.core.commands.OffersCommand;
 import de.bjarne.sigguard.core.listener.ReminderKeyListener;
 import de.bjarne.sigguard.core.listener.SlotFrameListener;
+import de.bjarne.sigguard.core.listener.SlotHighlightListener;
 import de.bjarne.sigguard.core.listener.TooltipListener;
 import de.bjarne.sigguard.core.offers.OfferRecorder;
 import de.bjarne.sigguard.core.reminder.HoverTracker;
@@ -41,11 +42,12 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
 
     this.registerListener(new TooltipListener(this, service));
     this.registerListener(new SlotFrameListener(this, service));
+    this.registerListener(new SlotHighlightListener(this, service));
     this.registerListener(new ReminderKeyListener(this));
     this.registerListener(this.reminders);
     this.registerListener(this.offers);
-    this.registerCommand(new AuctionTimerCommand(this.reminders));
-    this.registerCommand(new OffersCommand(this.offers));
+    this.registerCommand(new AuctionTimerCommand(this));
+    this.registerCommand(new OffersCommand(this));
 
     this.logger().info("SignaturWächter aktiviert");
   }

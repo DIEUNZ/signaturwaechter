@@ -47,6 +47,30 @@ public final class AuctionTooltipParser {
     return Optional.empty();
   }
 
+  /**
+   * Ob der Spielername im Auktionsteil (ab "Aktuelles Gebot"/"Verbleibende Zeit") vorkommt,
+   * z. B. als Höchstbietender. Die Signaturzeile davor zählt nicht.
+   */
+  public static boolean mentionsPlayerInAuction(List<String> lines, String playerName) {
+    if (playerName == null || playerName.isBlank()) {
+      return false;
+    }
+    Pattern name = Pattern.compile("(?i)(?<![A-Za-z0-9_])" + Pattern.quote(playerName)
+        + "(?![A-Za-z0-9_])");
+    boolean inAuction = false;
+    for (String line : lines) {
+      String plain = SignatureExtractor.stripFormatting(line);
+      String lower = plain.toLowerCase(Locale.ROOT);
+      if (lower.contains(BID_LABEL) || lower.contains(TIME_LABEL)) {
+        inAuction = true;
+      }
+      if (inAuction && name.matcher(plain).find()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Kennung einer Auktion: alles vor dem Auktionsteil (Name, Lore, Signatur, Kennung). */
   public static String stableKey(List<String> lines) {
     StringBuilder key = new StringBuilder();
