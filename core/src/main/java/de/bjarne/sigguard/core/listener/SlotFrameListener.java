@@ -13,6 +13,7 @@ public class SlotFrameListener {
 
   private static final int RED = 0xFF_FF_20_20;
   private static final float SLOT_SIZE = 16F;
+  private static final float FRAME_WIDTH = 2F;
 
   private final SigGuardAddon addon;
   private final ItemSignatureService service;
@@ -33,7 +34,7 @@ public class SlotFrameListener {
 
     if (this.service.analyze(event.itemStack()).isWarning()) {
       event.screenContext().canvas().submitRelativeOutlineRect(
-          event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, 1F, RED, RED);
+          event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, FRAME_WIDTH, RED, RED);
     }
   }
 }
