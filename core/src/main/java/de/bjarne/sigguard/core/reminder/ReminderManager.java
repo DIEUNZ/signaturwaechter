@@ -41,7 +41,7 @@ public class ReminderManager {
     long endsAt = now + remaining.toMillis();
     if (this.reminders.removeIf(reminder -> AuctionIdentity.sameAuction(
         reminder.key(), reminder.endsAt(), key, endsAt))) {
-      this.addon.displayMessage(Messages.chat("reminder.removed", NamedTextColor.GRAY, itemName));
+      Messages.send("reminder.removed", itemName);
       return;
     }
 
@@ -49,8 +49,7 @@ public class ReminderManager {
     long remindAt = Math.max(now, endsAt - lead);
     this.reminders.add(new Reminder(key, itemName, bid, endsAt, remindAt));
 
-    this.addon.displayMessage(Messages.chat("reminder.set", NamedTextColor.GRAY,
-        itemName, format(endsAt), format(remindAt)));
+    Messages.send("reminder.set", itemName, format(endsAt), format(remindAt));
   }
 
   /** Sucht die Erinnerung zu dieser Auktion (gleicher Name und etwa gleiche Endzeit). */
@@ -104,12 +103,12 @@ public class ReminderManager {
   private void fire(Reminder reminder) {
     long minutesLeft = Math.max(0, Math.round(
         (reminder.endsAt() - System.currentTimeMillis()) / 60_000.0));
-    Component text = reminder.bid() == null
-        ? Messages.tr("reminder.due", NamedTextColor.YELLOW, reminder.itemName(), minutesLeft)
-        : Messages.tr("reminder.dueWithBid", NamedTextColor.YELLOW,
-            reminder.itemName(), minutesLeft, reminder.bid());
+    String plain = reminder.bid() == null
+        ? Messages.text("reminder.due", reminder.itemName(), minutesLeft)
+        : Messages.text("reminder.dueWithBid", reminder.itemName(), minutesLeft, reminder.bid());
+    Component text = Component.text(plain, NamedTextColor.YELLOW);
 
-    this.addon.displayMessage(Component.text(VersionCompat.CLOCK + " ", NamedTextColor.GOLD).append(text));
+    Messages.sendWithSymbol(VersionCompat.CLOCK, plain);
     Laby.labyAPI().notificationController().push(Notification.builder()
         .title(Messages.tr("reminder.title", NamedTextColor.WHITE))
         .text(text)

@@ -43,7 +43,7 @@ public class ReminderKeyListener {
     String itemName = lines.get(0);
     Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(lines);
     if (remaining.isEmpty()) {
-      this.addon.displayMessage(Messages.chat("reminder.noTime", NamedTextColor.RED, itemName));
+      Messages.send("reminder.noTime", itemName);
       return;
     }
 

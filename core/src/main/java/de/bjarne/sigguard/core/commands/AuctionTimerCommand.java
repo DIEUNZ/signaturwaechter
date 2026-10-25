@@ -23,17 +23,16 @@ public class AuctionTimerCommand extends Command {
   @Override
   public boolean execute(String prefix, String[] arguments) {
     if (!this.addon.configuration().enabled().get()) {
-      this.displayMessage(Messages.chat("disabled", NamedTextColor.RED));
+      Messages.send("disabled");
       return true;
     }
 
     ReminderManager reminders = this.addon.reminders();
     String action = arguments.length == 0 ? "list" : arguments[0].toLowerCase();
     switch (action) {
-      case "clear" -> this.displayMessage(
-          Messages.chat("reminder.cleared", NamedTextColor.GRAY, reminders.clear()));
+      case "clear" -> Messages.send("reminder.cleared", reminders.clear());
       case "list" -> this.list(reminders);
-      default -> this.displayMessage(Messages.chat("reminder.usage", NamedTextColor.RED));
+      default -> Messages.send("reminder.usage");
     }
     return true;
   }
@@ -41,13 +40,12 @@ public class AuctionTimerCommand extends Command {
   private void list(ReminderManager reminders) {
     List<Reminder> list = reminders.reminders();
     if (list.isEmpty()) {
-      this.displayMessage(Messages.chat("reminder.none", NamedTextColor.GRAY));
+      Messages.send("reminder.none");
       return;
     }
     for (Reminder reminder : list) {
-      this.displayMessage(Messages.tr("reminder.entry", NamedTextColor.YELLOW,
-          reminder.itemName(), ReminderManager.format(reminder.endsAt()),
-          ReminderManager.format(reminder.remindAt())));
+      Messages.send("reminder.entry", reminder.itemName(),
+          ReminderManager.format(reminder.endsAt()), ReminderManager.format(reminder.remindAt()));
     }
   }
 

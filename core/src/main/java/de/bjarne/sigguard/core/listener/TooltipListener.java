@@ -103,9 +103,12 @@ public class TooltipListener {
     lines.add(hint);
   }
 
+  private static String warningKey(DetectionResult result) {
+    return result.verdict() == SignatureVerdict.FAKE ? "warning.fake" : "warning.suspect";
+  }
+
   public static Component warningLine(DetectionResult result) {
-    String key = result.verdict() == SignatureVerdict.FAKE ? "warning.fake" : "warning.suspect";
-    return Messages.withSymbol(VersionCompat.WARNING, key, NamedTextColor.RED,
+    return Messages.withSymbol(VersionCompat.WARNING, warningKey(result), NamedTextColor.RED,
         result.matchedName());
   }
 
@@ -120,9 +123,7 @@ public class TooltipListener {
       return;
     }
 
-    this.addon.displayMessage(Messages.chat("warning.chat", NamedTextColor.GOLD,
-            itemPlain, check.signature().name())
-        .append(Component.text(" "))
-        .append(warningLine(check.result())));
+    Messages.send("warning.chat", itemPlain, check.signature().name(),
+        Messages.text(warningKey(check.result()), check.result().matchedName()));
   }
 }
