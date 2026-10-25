@@ -23,9 +23,9 @@ public class SigGuardConfiguration extends AddonConfig {
 
   // --- Signaturprüfung ---
   @SettingSection("signature")
-  // Bewusst leer ausgeliefert: welche Signierer echt sind, entscheidet der Spieler selbst
+  // AbgegrieftHD signiert die offiziellen Admin-Items (Perks, Prefixe, Suffixe usw.)
   @TextFieldSetting
-  private final ConfigProperty<String> whitelist = new ConfigProperty<>("");
+  private final ConfigProperty<String> whitelist = new ConfigProperty<>("AbgegrieftHD");
 
   @SliderSetting(min = 0, max = 4)
   private final ConfigProperty<Integer> threshold = new ConfigProperty<>(2);

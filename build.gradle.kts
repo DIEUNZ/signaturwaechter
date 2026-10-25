@@ -26,7 +26,7 @@ labyMod {
         namespace = "sigguard"
         displayName = "SignaturWächter"
         author = "bjarne"
-        description = "Warns about forged item signatures in the GrieferGames auction house and reminds you of ending auctions. Made for the German server GrieferGames.net; messages are available in German and English."
+        description = "Schützt im GrieferGames-Auktionshaus vor dem Kauf gefälschter Perks, Prefixe, Suffixe und anderer Admin-Items: Das Addon erkennt Fake-Signaturen, warnt dich und erinnert an ablaufende Auktionen. Arbeitet nur lokal."
         minecraftVersion = "1.8.9,1.12.2,26.3"
         version = rootProject.version.toString()
     }

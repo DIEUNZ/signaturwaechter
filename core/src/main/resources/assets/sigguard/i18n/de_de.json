@@ -9,7 +9,7 @@
       },
       "whitelist": {
         "name": "Vertrauenswürdige Signierer",
-        "description": "Hier die Namen echter Signierer eintragen, durch Komma getrennt (z. B. Name1, Name2). Solange die Liste leer ist, wird keine Signatur geprüft."
+        "description": "Namen echter Signierer, durch Komma getrennt. Standard ist AbgegrieftHD (offizielle Admin-Items). Solange die Liste leer ist, wird keine Signatur geprüft."
       },
       "threshold": {
         "name": "Ähnlichkeits-Schwelle",

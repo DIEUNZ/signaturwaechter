@@ -9,7 +9,7 @@
       },
       "whitelist": {
         "name": "Trusted signers",
-        "description": "Enter the names of genuine signers here, comma separated (e.g. Name1, Name2). While the list is empty, no signature is checked."
+        "description": "Names of genuine signers, comma separated. Default is AbgegrieftHD (official admin items). While the list is empty, no signature is checked."
       },
       "threshold": {
         "name": "Similarity threshold",
