@@ -4,6 +4,15 @@
       "enabled": {
         "name": "Enabled"
       },
+      "language": {
+        "name": "Message language",
+        "description": "Language of the addon's chat messages and hints, independent of the game language. The settings page itself follows the game language.",
+        "entries": {
+          "german": "German",
+          "english": "English",
+          "game": "Same as game"
+        }
+      },
       "whitelist": {
         "name": "Trusted signers",
         "description": "Names of genuine signers, comma separated. Default is AbgegrieftHD (official admin items). While the list is empty, no signature is checked."

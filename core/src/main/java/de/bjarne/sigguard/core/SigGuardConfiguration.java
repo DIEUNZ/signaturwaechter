@@ -9,6 +9,7 @@ import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.ButtonSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget.KeyBindSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.color.ColorPickerWidget.ColorPickerSetting;
@@ -25,6 +26,10 @@ public class SigGuardConfiguration extends AddonConfig {
 
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
+
+  /** Sprache der Chat-Meldungen und Hinweise des Addons, unabhängig von der Spielsprache. */
+  @DropdownSetting
+  private final ConfigProperty<Language> language = new ConfigProperty<>(Language.GERMAN);
 
   // --- Signaturprüfung ---
   @SettingSection("signature")
@@ -89,6 +94,10 @@ public class SigGuardConfiguration extends AddonConfig {
     return this.enabled;
   }
 
+  public ConfigProperty<Language> language() {
+    return this.language;
+  }
+
   public ConfigProperty<String> whitelist() {
     return this.whitelist;
   }
@@ -150,5 +159,12 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Color> bidColor() {
     return this.bidColor;
+  }
+
+  /** Sprache der Addon-Meldungen: Deutsch, Englisch oder wie das Spiel. */
+  public enum Language {
+    GERMAN,
+    ENGLISH,
+    GAME
   }
 }

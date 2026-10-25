@@ -23,6 +23,7 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
   @Override
   protected void enable() {
     this.registerSettingCategory();
+    Messages.language(() -> this.configuration().language().get());
 
     ItemSignatureService service = new ItemSignatureService(this.configuration());
     this.reminders = new ReminderManager(this);

@@ -4,6 +4,15 @@
       "enabled": {
         "name": "Aktiviert"
       },
+      "language": {
+        "name": "Sprache der Meldungen",
+        "description": "Sprache der Chat-Meldungen und Hinweise des Addons, unabhängig von der Spielsprache. Die Einstellungsseite selbst folgt der Spielsprache.",
+        "entries": {
+          "german": "Deutsch",
+          "english": "Englisch",
+          "game": "Wie Spielsprache"
+        }
+      },
       "whitelist": {
         "name": "Vertrauenswürdige Signierer",
         "description": "Namen echter Signierer, durch Komma getrennt. Standard ist AbgegrieftHD (offizielle Admin-Items). Solange die Liste leer ist, wird keine Signatur geprüft."
