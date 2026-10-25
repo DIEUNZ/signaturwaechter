@@ -47,10 +47,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           SRC="$(ls build/libs/*-release.jar | head -1)"
-          JAR="build/libs/ah-fake-warner-${VERSION}.jar"
+          JAR="build/libs/ah-fake-warner.jar"
           cp "$SRC" "$JAR"
           gh release create "v${VERSION}" "$JAR" \
             --target "$GITHUB_SHA" \
             --title "GG-Auktionshaus-Fake-Warner ${VERSION}" \
             --generate-notes \
-            --notes "Nur für LabyMod 4. Jar in den Ordner LabyMod/addons legen und das Spiel neu starten. Beim Update die alte Jar vorher löschen (es darf nur eine Version im Ordner liegen). Support: https://discord.gg/sCex8JNTGS"
+            --notes "Nur für LabyMod 4. Jar in den Ordner LabyMod/addons legen und das Spiel neu starten. Beim Update die alte ah-fake-warner.jar einfach überschreiben. Support: https://discord.gg/sCex8JNTGS"

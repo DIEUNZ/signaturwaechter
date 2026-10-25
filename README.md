@@ -19,11 +19,11 @@ Befehle: `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie.
 
 ## Installation
 
-1. Die neueste `ah-fake-warner-<Version>.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
+1. Die neueste `ah-fake-warner.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
 2. In den Ordner `LabyMod/addons` legen (im Minecraft-Verzeichnis, `.minecraft/labymod-neo/addons`).
 3. Spiel neu starten.
 
-**Update:** Alte Version vorher aus dem Ordner `addons` **löschen**, es darf immer nur eine Jar des Addons dort liegen (auch nicht zusätzlich die aus dem LabyMod-Store).
+**Update:** Die neue `ah-fake-warner.jar` einfach in den Ordner `addons` legen und die alte überschreiben. Es darf nur eine Jar des Addons dort liegen (auch nicht zusätzlich die aus dem LabyMod-Store).
 
 **Unterstützt:** LabyMod 4 mit Minecraft 1.8.9, 1.12.2 und 26.3. **Nicht** für LabyMod 3.
 
