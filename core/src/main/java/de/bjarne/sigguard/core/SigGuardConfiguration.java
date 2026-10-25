@@ -25,8 +25,9 @@ public class SigGuardConfiguration extends AddonConfig {
 
   // --- Signaturprüfung ---
   @SettingSection("signature")
+  // Bewusst leer ausgeliefert: welche Signierer echt sind, entscheidet der Spieler selbst
   @TextFieldSetting
-  private final ConfigProperty<String> whitelist = new ConfigProperty<>("AbgegrieftHD");
+  private final ConfigProperty<String> whitelist = new ConfigProperty<>("");
 
   @SliderSetting(min = 0, max = 4)
   private final ConfigProperty<Integer> threshold = new ConfigProperty<>(2);

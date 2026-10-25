@@ -9,7 +9,7 @@
       },
       "whitelist": {
         "name": "Vertrauenswürdige Signierer",
-        "description": "Namen durch Komma getrennt, z. B. AbgegrieftHD, Notch"
+        "description": "Hier die Namen echter Signierer eintragen, durch Komma getrennt (z. B. Name1, Name2). Solange die Liste leer ist, wird keine Signatur geprüft."
       },
       "threshold": {
         "name": "Ähnlichkeits-Schwelle",

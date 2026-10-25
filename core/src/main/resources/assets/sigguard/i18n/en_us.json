@@ -9,7 +9,7 @@
       },
       "whitelist": {
         "name": "Trusted signers",
-        "description": "Comma separated, e.g. AbgegrieftHD, Notch"
+        "description": "Enter the names of genuine signers here, comma separated (e.g. Name1, Name2). While the list is empty, no signature is checked."
       },
       "threshold": {
         "name": "Similarity threshold",
