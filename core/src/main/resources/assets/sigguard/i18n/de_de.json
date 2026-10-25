@@ -41,6 +41,18 @@
       "reminderHint": {
         "name": "Timer im Tooltip vorschlagen",
         "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"
+      },
+      "offers": {
+        "name": "Angebote & CSV-Export"
+      },
+      "recordOffers": {
+        "name": "Angebote aufzeichnen",
+        "description": "Merkt sich alle im Auktionshaus gesehenen Angebote (nur lokal)"
+      },
+      "exportOffers": {
+        "name": "Als CSV exportieren",
+        "text": "Exportieren",
+        "description": "Schreibt alle Angebote nach labymod-neo/configs/sigguard (auch per /angebote export)"
       }
     }
   }

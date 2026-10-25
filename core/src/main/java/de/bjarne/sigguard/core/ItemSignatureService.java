@@ -21,8 +21,8 @@ public class ItemSignatureService {
 
   private final SigGuardConfiguration config;
 
-  // Pro Item-Objekt gecachtes Ergebnis, damit der Slot-Rahmen nicht jeden Frame rechnet
-  private final Map<ItemStack, Optional<Check>> slotCache =
+  // Pro Item-Objekt gecachtes Ergebnis, damit Slot-Rahmen und Aufzeichnung nicht jeden Frame rechnen
+  private final Map<ItemStack, Analysis> slotCache =
       Collections.synchronizedMap(new WeakHashMap<>());
 
   private SignatureDetector detector;
@@ -44,13 +44,14 @@ public class ItemSignatureService {
         .map(signature -> new Check(signature, this.detector.detect(signature.name()), plain));
   }
 
-  /** Prüft ein Item ohne offenen Tooltip (für den Slot-Rahmen), mit Cache. */
-  public Optional<Check> checkCached(ItemStack itemStack) {
+  /** Analysiert ein Item ohne offenen Tooltip (Slot-Rahmen, Aufzeichnung), mit Cache. */
+  public Analysis analyze(ItemStack itemStack) {
     this.refreshIfSettingsChanged();
     return this.slotCache.computeIfAbsent(itemStack, stack -> {
       this.computingLines = true;
       try {
-        return this.check(stack.getTooltipLines(false));
+        List<Component> lines = stack.getTooltipLines(false);
+        return new Analysis(toPlain(lines), this.check(lines));
       } finally {
         this.computingLines = false;
       }
@@ -91,5 +92,16 @@ public class ItemSignatureService {
    * @param lines     Tooltip als reiner Text
    */
   public record Check(Signature signature, DetectionResult result, List<String> lines) {
+  }
+
+  /**
+   * @param lines Tooltip als reiner Text
+   * @param check Signaturprüfung, falls eine Signatur gefunden wurde
+   */
+  public record Analysis(List<String> lines, Optional<Check> check) {
+
+    public boolean isWarning() {
+      return this.check.map(value -> value.result().verdict().isWarning()).orElse(false);
+    }
   }
 }

@@ -31,10 +31,7 @@ public class SlotFrameListener {
       return;
     }
 
-    boolean warn = this.service.checkCached(event.itemStack())
-        .map(check -> check.result().verdict().isWarning())
-        .orElse(false);
-    if (warn) {
+    if (this.service.analyze(event.itemStack()).isWarning()) {
       event.screenContext().canvas().submitRelativeOutlineRect(
           event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, 1F, RED, RED);
     }

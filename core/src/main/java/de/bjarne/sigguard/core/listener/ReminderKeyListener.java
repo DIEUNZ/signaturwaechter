@@ -1,7 +1,7 @@
 package de.bjarne.sigguard.core.listener;
 
 import de.bjarne.sigguard.core.SigGuardAddon;
-import de.bjarne.sigguard.core.reminder.AuctionTimeParser;
+import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.HoverTracker.Hovered;
 import java.time.Duration;
 import java.util.List;
@@ -41,7 +41,7 @@ public class ReminderKeyListener {
 
     List<String> lines = hovered.lines();
     String itemName = lines.get(0);
-    Optional<Duration> remaining = AuctionTimeParser.parseRemaining(lines);
+    Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(lines);
     if (remaining.isEmpty()) {
       this.addon.displayMessage(Component.text(
           "[SignaturWächter] Keine Restzeit im Tooltip von „" + itemName + "“ gefunden.",
@@ -49,8 +49,8 @@ public class ReminderKeyListener {
       return;
     }
 
-    String bid = AuctionTimeParser.parseBid(lines).orElse(null);
+    String bid = AuctionTooltipParser.parseBid(lines).orElse(null);
     this.addon.reminders().toggle(
-        AuctionTimeParser.stableKey(lines), itemName, bid, remaining.get());
+        AuctionTooltipParser.stableKey(lines), itemName, bid, remaining.get());
   }
 }

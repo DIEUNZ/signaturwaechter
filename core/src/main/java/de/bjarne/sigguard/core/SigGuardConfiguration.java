@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.key.Key;
+import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.ButtonSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget.KeyBindSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
@@ -12,6 +13,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.Te
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingSection;
+import net.labymod.api.util.MethodOrder;
 
 @ConfigName("settings")
 public class SigGuardConfiguration extends AddonConfig {
@@ -50,6 +52,21 @@ public class SigGuardConfiguration extends AddonConfig {
 
   @SwitchSetting
   private final ConfigProperty<Boolean> reminderHint = new ConfigProperty<>(true);
+
+  // --- Angebote / CSV-Export ---
+  @SettingSection("offers")
+  @SwitchSetting
+  private final ConfigProperty<Boolean> recordOffers = new ConfigProperty<>(true);
+
+  /** Button in den Settings: schreibt alle Angebote als CSV in den Addon-Ordner. */
+  @MethodOrder(after = "recordOffers")
+  @ButtonSetting
+  public void exportOffers() {
+    SigGuardAddon addon = SigGuardAddon.get();
+    if (addon != null) {
+      addon.offers().export();
+    }
+  }
 
   @Override
   public ConfigProperty<Boolean> enabled() {
@@ -97,5 +114,9 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Boolean> reminderHint() {
     return this.reminderHint;
+  }
+
+  public ConfigProperty<Boolean> recordOffers() {
+    return this.recordOffers;
   }
 }

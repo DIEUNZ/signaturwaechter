@@ -6,7 +6,7 @@ import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.SigGuardConfiguration;
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
-import de.bjarne.sigguard.core.reminder.AuctionTimeParser;
+import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.ReminderManager;
 import de.bjarne.sigguard.core.reminder.ReminderManager.Reminder;
 import java.time.Duration;
@@ -69,14 +69,14 @@ public class TooltipListener {
       return;
     }
 
-    Optional<Duration> remaining = AuctionTimeParser.parseRemaining(plain);
+    Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(plain);
     if (remaining.isEmpty()) {
       return;
     }
 
     String keyName = "[" + key.getName() + "]";
     Optional<Reminder> existing =
-        this.addon.reminders().find(AuctionTimeParser.stableKey(plain));
+        this.addon.reminders().find(AuctionTooltipParser.stableKey(plain));
     Component hint;
     if (existing.isPresent()) {
       hint = Component.text("⏰ Erinnerung gesetzt für "
