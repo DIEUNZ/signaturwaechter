@@ -17,6 +17,7 @@ import net.labymod.api.util.Color;
 public class SlotHighlightListener {
 
   private static final float SLOT_SIZE = 16F;
+  private static final int STRIPE_WIDTH = 4;
 
   private final SigGuardAddon addon;
   private final ItemSignatureService service;
@@ -51,18 +52,27 @@ public class SlotHighlightListener {
     }
 
     ScreenCanvas canvas = event.screenContext().canvas();
-    if (bid) {
-      canvas.submitRelativeRect(event.x(), event.y(), SLOT_SIZE, SLOT_SIZE,
-          argb(config.bidColor().get()));
+    int bidColor = argb(config.bidColor().get());
+    int reminderColor = argb(config.reminderColor().get());
+    if (bid && reminder) {
+      this.drawStripes(canvas, event.x(), event.y(), bidColor, reminderColor);
+    } else {
+      int color = bid ? bidColor : reminderColor;
+      canvas.submitRelativeRect(event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, color);
     }
-    if (reminder) {
-      int color = argb(config.reminderColor().get());
-      // Beides aktiv: Gebot als Fläche, Timer als Rahmen
-      if (bid) {
-        canvas.submitRelativeOutlineRect(event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, 1F,
-            color, color);
-      } else {
-        canvas.submitRelativeRect(event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, color);
+  }
+
+  // Diagonale Streifen im Wechsel (Gebot / Timer), zeilenweise in Abschnitten gezeichnet
+  private void drawStripes(ScreenCanvas canvas, float x, float y, int first, int second) {
+    int size = (int) SLOT_SIZE;
+    for (int row = 0; row < size; row++) {
+      int column = 0;
+      while (column < size) {
+        int band = (column + row) / STRIPE_WIDTH;
+        int end = Math.min(size, (band + 1) * STRIPE_WIDTH - row);
+        canvas.submitRelativeRect(x + column, y + row, end - column, 1F,
+            band % 2 == 0 ? first : second);
+        column = end;
       }
     }
   }
