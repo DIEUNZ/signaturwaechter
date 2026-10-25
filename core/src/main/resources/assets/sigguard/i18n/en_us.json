@@ -1,0 +1,47 @@
+{
+  "sigguard": {
+    "settings": {
+      "enabled": {
+        "name": "Enabled"
+      },
+      "signature": {
+        "name": "Signature check"
+      },
+      "whitelist": {
+        "name": "Trusted signers",
+        "description": "Comma separated, e.g. AbgegrieftHD, Notch"
+      },
+      "threshold": {
+        "name": "Similarity threshold",
+        "description": "Max edit distance for \"possible fake\" (0 = look-alike characters only)"
+      },
+      "slotFrame": {
+        "name": "Red slot frame"
+      },
+      "chatWarning": {
+        "name": "One-time chat warning"
+      },
+      "signaturePattern": {
+        "name": "Signature pattern (regex)",
+        "description": "Group 1 = name, group 2 = date"
+      },
+      "reminder": {
+        "name": "Auction reminder"
+      },
+      "reminderEnabled": {
+        "name": "Reminders enabled"
+      },
+      "reminderKey": {
+        "name": "Key (while hovering)",
+        "description": "Press over an auction to set or remove a reminder"
+      },
+      "reminderLeadMinutes": {
+        "name": "Remind minutes before end"
+      },
+      "reminderHint": {
+        "name": "Suggest timer in tooltip",
+        "description": "Shows on auctions which key sets a reminder"
+      }
+    }
+  }
+}

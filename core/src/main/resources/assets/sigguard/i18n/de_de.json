@@ -1,0 +1,47 @@
+{
+  "sigguard": {
+    "settings": {
+      "enabled": {
+        "name": "Aktiviert"
+      },
+      "signature": {
+        "name": "Signaturprüfung"
+      },
+      "whitelist": {
+        "name": "Vertrauenswürdige Signierer",
+        "description": "Namen durch Komma getrennt, z. B. AbgegrieftHD, Notch"
+      },
+      "threshold": {
+        "name": "Ähnlichkeits-Schwelle",
+        "description": "Maximale Editierdistanz für \"Mögliche Fälschung\" (0 = nur verwechselbare Zeichen)"
+      },
+      "slotFrame": {
+        "name": "Roter Rahmen um Slots"
+      },
+      "chatWarning": {
+        "name": "Einmalige Chat-Warnung"
+      },
+      "signaturePattern": {
+        "name": "Signatur-Muster (Regex)",
+        "description": "Gruppe 1 = Name, Gruppe 2 = Datum"
+      },
+      "reminder": {
+        "name": "Auktions-Erinnerung"
+      },
+      "reminderEnabled": {
+        "name": "Erinnerungen aktiv"
+      },
+      "reminderKey": {
+        "name": "Taste (beim Hovern)",
+        "description": "Über einer Auktion drücken, um eine Erinnerung zu setzen oder zu entfernen"
+      },
+      "reminderLeadMinutes": {
+        "name": "Minuten vor Ablauf erinnern"
+      },
+      "reminderHint": {
+        "name": "Timer im Tooltip vorschlagen",
+        "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"
+      }
+    }
+  }
+}
