@@ -53,4 +53,4 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "GG-Auktionshaus-Fake-Warner ${VERSION}" \
             --generate-notes \
-            --notes "Nur für LabyMod 4. Jar in den Ordner LabyMod/addons legen und das Spiel neu starten. Support: https://discord.gg/sCex8JNTGS"
+            --notes "Nur für LabyMod 4. Jar in den Ordner LabyMod/addons legen und das Spiel neu starten. Beim Update die alte Jar vorher löschen (es darf nur eine Version im Ordner liegen). Support: https://discord.gg/sCex8JNTGS"

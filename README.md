@@ -23,6 +23,8 @@ Befehle: `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie.
 2. In den Ordner `LabyMod/addons` legen (im Minecraft-Verzeichnis, `.minecraft/labymod-neo/addons`).
 3. Spiel neu starten.
 
+**Update:** Alte Version vorher aus dem Ordner `addons` **löschen**, es darf immer nur eine Jar des Addons dort liegen (auch nicht zusätzlich die aus dem LabyMod-Store).
+
 **Unterstützt:** LabyMod 4 mit Minecraft 1.8.9, 1.12.2 und 26.3. **Nicht** für LabyMod 3.
 
 ## Support
