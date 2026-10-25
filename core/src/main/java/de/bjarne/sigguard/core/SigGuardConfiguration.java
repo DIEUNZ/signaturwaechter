@@ -61,14 +61,14 @@ public class SigGuardConfiguration extends AddonConfig {
 
   @ColorPickerSetting(alpha = true)
   private final ConfigProperty<Color> reminderColor =
-      new ConfigProperty<>(Color.ofRGB(60, 110, 255, 110));
+      new ConfigProperty<>(Color.ofRGB(30, 120, 255, 180));
 
   @SwitchSetting
   private final ConfigProperty<Boolean> highlightBid = new ConfigProperty<>(true);
 
   @ColorPickerSetting(alpha = true)
   private final ConfigProperty<Color> bidColor =
-      new ConfigProperty<>(Color.ofRGB(60, 200, 60, 110));
+      new ConfigProperty<>(Color.ofRGB(40, 200, 60, 150));
 
   @Override
   public ConfigProperty<Boolean> enabled() {

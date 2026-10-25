@@ -37,14 +37,15 @@ public class ReminderManager {
 
   /** Legt eine Erinnerung an oder entfernt sie, falls es für das Item schon eine gibt. */
   public synchronized void toggle(String key, String itemName, String bid, Duration remaining) {
-    if (this.reminders.removeIf(reminder -> reminder.key().equals(key))) {
+    long now = System.currentTimeMillis();
+    long endsAt = now + remaining.toMillis();
+    if (this.reminders.removeIf(reminder -> AuctionIdentity.sameAuction(
+        reminder.key(), reminder.endsAt(), key, endsAt))) {
       this.addon.displayMessage(Messages.chat("reminder.removed", NamedTextColor.GRAY, itemName));
       return;
     }
 
-    long now = System.currentTimeMillis();
     long lead = Duration.ofMinutes(this.addon.configuration().reminderLeadMinutes().get()).toMillis();
-    long endsAt = now + remaining.toMillis();
     long remindAt = Math.max(now, endsAt - lead);
     this.reminders.add(new Reminder(key, itemName, bid, endsAt, remindAt));
 
@@ -52,9 +53,10 @@ public class ReminderManager {
         itemName, format(endsAt), format(remindAt)));
   }
 
-  public synchronized Optional<Reminder> find(String key) {
+  /** Sucht die Erinnerung zu dieser Auktion (gleicher Name und etwa gleiche Endzeit). */
+  public synchronized Optional<Reminder> find(String key, long endsAt) {
     for (Reminder reminder : this.reminders) {
-      if (reminder.key().equals(key)) {
+      if (AuctionIdentity.sameAuction(reminder.key(), reminder.endsAt(), key, endsAt)) {
         return Optional.of(reminder);
       }
     }

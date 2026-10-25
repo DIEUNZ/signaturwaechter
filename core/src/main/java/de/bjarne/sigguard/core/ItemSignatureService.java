@@ -5,6 +5,7 @@ import de.bjarne.sigguard.core.detect.SignatureDetector;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import de.bjarne.sigguard.core.extract.SignatureExtractor.Signature;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,8 @@ import net.labymod.api.client.world.item.ItemStack;
 public class ItemSignatureService {
 
   private final SigGuardConfiguration config;
+
+  private static final long CACHE_MILLIS = 5_000;
 
   // Pro Item-Objekt gecachtes Ergebnis, damit die Slot-Markierungen nicht jeden Frame rechnen
   private final Map<ItemStack, Analysis> slotCache =
@@ -46,24 +49,35 @@ public class ItemSignatureService {
         .map(signature -> new Check(signature, this.detector.detect(signature.name()), plain));
   }
 
-  /** Analysiert ein Item ohne offenen Tooltip (Slot-Markierungen), mit Cache. */
+  /**
+   * Analysiert ein Item ohne offenen Tooltip (Slot-Markierungen), mit Cache. Der Cache läuft
+   * nach kurzer Zeit ab, damit z. B. ein überbotenes Gebot nicht ewig markiert bleibt.
+   */
   public Analysis analyze(ItemStack itemStack) {
     this.refreshIfSettingsChanged();
-    return this.slotCache.computeIfAbsent(itemStack, stack -> {
-      this.computingLines = true;
-      try {
-        List<Component> lines = stack.getTooltipLines(false);
-        List<String> plain = toPlain(lines);
-        boolean auction = AuctionTooltipParser.isAuction(plain);
-        return new Analysis(
-            this.check(lines),
-            auction ? AuctionTooltipParser.stableKey(plain) : null,
-            auction && AuctionTooltipParser.mentionsPlayerInAuction(
-                plain, Laby.labyAPI().getName()));
-      } finally {
-        this.computingLines = false;
-      }
-    });
+    long now = System.currentTimeMillis();
+    Analysis cached = this.slotCache.get(itemStack);
+    if (cached != null && now - cached.computedAt() < CACHE_MILLIS) {
+      return cached;
+    }
+
+    this.computingLines = true;
+    try {
+      List<Component> lines = itemStack.getTooltipLines(false);
+      List<String> plain = toPlain(lines);
+      boolean auction = AuctionTooltipParser.isAuction(plain);
+      Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(plain);
+      Analysis analysis = new Analysis(
+          this.check(lines),
+          auction ? AuctionTooltipParser.stableKey(plain) : null,
+          auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),
+          remaining.isPresent() ? now + remaining.get().toMillis() : -1,
+          now);
+      this.slotCache.put(itemStack, analysis);
+      return analysis;
+    } finally {
+      this.computingLines = false;
+    }
   }
 
   public boolean isComputingLines() {
@@ -105,12 +119,16 @@ public class ItemSignatureService {
   /**
    * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
    * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
-   * @param ownBid     ob der eigene Name im Auktionsteil steht (z. B. Höchstbietender)
+   * @param ownBid     ob du auf die Auktion geboten hast (Höchstbietender oder Gebotslimit)
+   * @param endsAtEstimate geschätzte Endzeit (Epoch-Millis) oder -1
+   * @param computedAt Zeitpunkt der Analyse (Epoch-Millis)
    */
   public record Analysis(
       Optional<Check> check,
       String auctionKey,
-      boolean ownBid
+      boolean ownBid,
+      long endsAtEstimate,
+      long computedAt
   ) {
 
     public boolean isWarning() {

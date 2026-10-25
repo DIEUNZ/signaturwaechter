@@ -16,6 +16,10 @@ public final class AuctionTooltipParser {
 
   private static final String TIME_LABEL = "verbleibende zeit";
   private static final String BID_LABEL = "aktuelles gebot";
+  // GG nennt den Spieler nicht, sondern schreibt "Du bist aktuell Höchstbietender!" bzw.
+  // zeigt "Dein Gebotslimit", sobald man geboten hat
+  private static final List<String> OWN_BID_MARKERS =
+      List.of("du bist aktuell höchstbietender", "dein gebotslimit");
   private static final Pattern TIME_PART = Pattern.compile(
       "(\\d+)\\s*(tage?|d|stunden?|std|h|minuten?|min|m|sekunden?|sek|s)\\b");
 
@@ -35,6 +39,18 @@ public final class AuctionTooltipParser {
     return parseBid(lines).isPresent();
   }
 
+  /** Ob du auf diese Auktion geboten hast (Höchstbietender oder eigenes Gebotslimit). */
+  public static boolean hasOwnBid(List<String> lines, String playerName) {
+    for (String line : lines) {
+      String lower = SignatureExtractor.stripFormatting(line).toLowerCase(Locale.ROOT);
+      for (String marker : OWN_BID_MARKERS) {
+        if (lower.contains(marker)) {
+          return true;
+        }
+      }
+    }
+    return mentionsPlayerInAuction(lines, playerName);
+  }
 
   /**
    * Ob der Spielername im Auktionsteil (ab "Aktuelles Gebot"/"Verbleibende Zeit") vorkommt,

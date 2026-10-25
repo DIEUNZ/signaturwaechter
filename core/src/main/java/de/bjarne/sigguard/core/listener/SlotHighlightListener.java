@@ -43,7 +43,9 @@ public class SlotHighlightListener {
 
     boolean bid = config.highlightBid().get() && analysis.ownBid();
     boolean reminder = config.highlightReminder().get() && config.reminderEnabled().get()
-        && this.addon.reminders().find(analysis.auctionKey()).isPresent();
+        && analysis.endsAtEstimate() >= 0
+        && this.addon.reminders().find(analysis.auctionKey(), analysis.endsAtEstimate())
+        .isPresent();
     if (!bid && !reminder) {
       return;
     }

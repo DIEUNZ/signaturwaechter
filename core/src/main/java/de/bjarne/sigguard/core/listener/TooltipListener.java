@@ -77,15 +77,15 @@ public class TooltipListener {
     }
 
     String keyName = key.getName();
+    long endsAtMillis = System.currentTimeMillis() + remaining.get().toMillis();
     Optional<Reminder> existing =
-        this.addon.reminders().find(AuctionTooltipParser.stableKey(plain));
+        this.addon.reminders().find(AuctionTooltipParser.stableKey(plain), endsAtMillis);
     Component hint;
     if (existing.isPresent()) {
       hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.set", NamedTextColor.GREEN,
           ReminderManager.format(existing.get().remindAt()), keyName);
     } else {
-      String endsAt = ReminderManager.format(
-          System.currentTimeMillis() + remaining.get().toMillis());
+      String endsAt = ReminderManager.format(endsAtMillis);
       int lead = config.reminderLeadMinutes().get();
       if (remaining.get().compareTo(Duration.ofMinutes(lead)) <= 0) {
         hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.endingSoon",

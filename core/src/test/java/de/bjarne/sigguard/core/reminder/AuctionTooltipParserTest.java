@@ -84,6 +84,32 @@ class AuctionTooltipParserTest {
   }
 
   @Test
+  void eigenesGebotOhneNamenErkennen() {
+    // Echter GG-Tooltip: der Spielername steht nirgends
+    List<String> lavaBucket = List.of(
+        "Magischer Lavaeimer",
+        "Mit diesem Eimer kannst du 100 Blöcke",
+        "Lava platzieren!",
+        "",
+        "Verbleibende Haltbarkeit: 100",
+        "$ | Aktuelles Gebot:",
+        "1$",
+        "$ | Dein Gebotslimit:",
+        "12$",
+        "✓ Du bist aktuell Höchstbietender!",
+        "⌚ | Verbleibende Zeit:",
+        "85 Minuten");
+    assertTrue(AuctionTooltipParser.hasOwnBid(lavaBucket, "DIEUNZ"));
+    // Nur Gebotslimit (z. B. überboten) zählt ebenfalls als "geboten"
+    assertTrue(AuctionTooltipParser.hasOwnBid(List.of("Aktuelles Gebot:", "5$",
+        "Dein Gebotslimit:", "9$", "Verbleibende Zeit:", "3 Minuten"), "DIEUNZ"));
+    // Ohne eigenes Gebot
+    assertTrue(!AuctionTooltipParser.hasOwnBid(TOOLTIP, "DIEUNZ"));
+    assertEquals(Duration.ofMinutes(85), AuctionTooltipParser.parseRemaining(lavaBucket).orElseThrow());
+    assertEquals("1$", AuctionTooltipParser.parseBid(lavaBucket).orElseThrow());
+  }
+
+  @Test
   void keineZeit() {
     assertTrue(AuctionTooltipParser.parseRemaining(List.of("Frost-Schrift")).isEmpty());
     assertTrue(AuctionTooltipParser.parseDuration("bald").isEmpty());
