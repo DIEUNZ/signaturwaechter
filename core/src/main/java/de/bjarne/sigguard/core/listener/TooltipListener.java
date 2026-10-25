@@ -5,6 +5,7 @@ import de.bjarne.sigguard.core.ItemSignatureService.Check;
 import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.SigGuardConfiguration;
+import de.bjarne.sigguard.core.VersionCompat;
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
@@ -80,18 +81,21 @@ public class TooltipListener {
         this.addon.reminders().find(AuctionTooltipParser.stableKey(plain));
     Component hint;
     if (existing.isPresent()) {
-      hint = Messages.tr("hint.set", NamedTextColor.GREEN,
+      hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.set", NamedTextColor.GREEN,
           ReminderManager.format(existing.get().remindAt()), keyName);
     } else {
       String endsAt = ReminderManager.format(
           System.currentTimeMillis() + remaining.get().toMillis());
       int lead = config.reminderLeadMinutes().get();
       if (remaining.get().compareTo(Duration.ofMinutes(lead)) <= 0) {
-        hint = Messages.tr("hint.endingSoon", NamedTextColor.YELLOW, endsAt);
+        hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.endingSoon",
+            NamedTextColor.YELLOW, endsAt);
       } else if (lead == 0) {
-        hint = Messages.tr("hint.offerAtEnd", NamedTextColor.AQUA, keyName, endsAt);
+        hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.offerAtEnd",
+            NamedTextColor.AQUA, keyName, endsAt);
       } else {
-        hint = Messages.tr("hint.offer", NamedTextColor.AQUA, keyName, lead, endsAt);
+        hint = Messages.withSymbol(VersionCompat.CLOCK, "hint.offer",
+            NamedTextColor.AQUA, keyName, lead, endsAt);
       }
     }
 
@@ -101,7 +105,8 @@ public class TooltipListener {
 
   public static Component warningLine(DetectionResult result) {
     String key = result.verdict() == SignatureVerdict.FAKE ? "warning.fake" : "warning.suspect";
-    return Messages.tr(key, NamedTextColor.RED, result.matchedName());
+    return Messages.withSymbol(VersionCompat.WARNING, key, NamedTextColor.RED,
+        result.matchedName());
   }
 
   // Pro Item (Name + Signatur + Datum) nur einmal im Chat warnen

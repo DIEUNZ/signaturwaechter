@@ -27,6 +27,12 @@ public final class Messages {
     return Component.translatable(PREFIX + key, color, components);
   }
 
+  /** Übersetzter Text mit vorangestelltem Symbol in derselben Farbe. */
+  public static Component withSymbol(String symbol, String key, TextColor color,
+      Object... arguments) {
+    return Component.text(symbol + " ", color).append(tr(key, color, arguments));
+  }
+
   /** Chat-Nachricht mit "[SignaturWächter]"-Präfix. */
   public static Component chat(String key, TextColor color, Object... arguments) {
     return Component.translatable(PREFIX + "prefix", NamedTextColor.DARK_AQUA)

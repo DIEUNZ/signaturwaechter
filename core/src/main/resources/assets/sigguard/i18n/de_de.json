@@ -63,15 +63,15 @@
       "prefix": "[SignaturWächter]",
       "disabled": "Das Addon ist deaktiviert.",
       "warning": {
-        "fake": "⚠ FÄLSCHUNG – imitiert %s",
-        "suspect": "⚠ Mögliche Fälschung – ähnlich zu %s",
+        "fake": "FÄLSCHUNG – imitiert %s",
+        "suspect": "Mögliche Fälschung – ähnlich zu %s",
         "chat": "%s: signiert von %s"
       },
       "hint": {
-        "set": "⏰ Erinnerung gesetzt für %s – [%s] zum Entfernen",
-        "endingSoon": "⏰ Endet gleich (ca. %s)",
-        "offerAtEnd": "⏰ [%s] Erinnern bei Ablauf (endet ca. %s)",
-        "offer": "⏰ [%s] Erinnern %s Min. vor Ende (endet ca. %s)"
+        "set": "Erinnerung gesetzt für %s – [%s] zum Entfernen",
+        "endingSoon": "Endet gleich (ca. %s)",
+        "offerAtEnd": "[%s] Erinnern bei Ablauf (endet ca. %s)",
+        "offer": "[%s] Erinnern %s Min. vor Ende (endet ca. %s)"
       },
       "reminder": {
         "title": "Auktions-Erinnerung",

@@ -27,7 +27,7 @@ labyMod {
         displayName = "SignaturWächter"
         author = "bjarne"
         description = "Warns about forged item signatures in the GrieferGames auction house and reminds you of ending auctions. Made for the German server GrieferGames.net; messages are available in German and English."
-        minecraftVersion = "26.3"
+        minecraftVersion = "1.8.9,1.12.2,26.3"
         version = rootProject.version.toString()
     }
 }

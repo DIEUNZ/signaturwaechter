@@ -2,6 +2,7 @@ package de.bjarne.sigguard.core.reminder;
 
 import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
+import de.bjarne.sigguard.core.VersionCompat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalTime;
@@ -14,7 +15,6 @@ import java.util.Optional;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
-import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -27,8 +27,6 @@ import net.labymod.api.notification.Notification;
 public class ReminderManager {
 
   private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm");
-  private static final ResourceLocation SOUND =
-      ResourceLocation.create("minecraft", "block.note_block.pling");
 
   private final SigGuardAddon addon;
   private final List<Reminder> reminders = new ArrayList<>();
@@ -109,12 +107,12 @@ public class ReminderManager {
         : Messages.tr("reminder.dueWithBid", NamedTextColor.YELLOW,
             reminder.itemName(), minutesLeft, reminder.bid());
 
-    this.addon.displayMessage(Component.text("⏰ ", NamedTextColor.GOLD).append(text));
+    this.addon.displayMessage(Component.text(VersionCompat.CLOCK + " ", NamedTextColor.GOLD).append(text));
     Laby.labyAPI().notificationController().push(Notification.builder()
         .title(Messages.tr("reminder.title", NamedTextColor.WHITE))
         .text(text)
         .build());
-    Laby.labyAPI().minecraft().sounds().playSound(SOUND, 1F, 1F);
+    Laby.labyAPI().minecraft().sounds().playSound(VersionCompat.REMINDER_SOUND, 1F, 1F);
   }
 
   public static String format(long epochMillis) {
