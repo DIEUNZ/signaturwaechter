@@ -42,18 +42,6 @@
         "name": "Timer im Tooltip vorschlagen",
         "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"
       },
-      "offers": {
-        "name": "Angebote & CSV-Export"
-      },
-      "recordOffers": {
-        "name": "Angebote aufzeichnen",
-        "description": "Merkt sich alle im Auktionshaus gesehenen Angebote (nur lokal)"
-      },
-      "exportOffers": {
-        "name": "Als CSV exportieren",
-        "text": "Exportieren",
-        "description": "Schreibt alle Angebote nach labymod-neo/configs/sigguard (auch per /angebote export)"
-      },
       "highlight": {
         "name": "Slot-Farben"
       },
@@ -96,14 +84,6 @@
         "none": "Keine Erinnerungen aktiv.",
         "entry": "• %s – endet %s, Erinnerung %s",
         "usage": "Benutzung: /aht list | /aht clear"
-      },
-      "offers": {
-        "empty": "Noch keine Angebote aufgezeichnet. Öffne das Auktionshaus und blättere durch.",
-        "exported": "%s Angebote exportiert: %s",
-        "exportFailed": "Export fehlgeschlagen: %s",
-        "count": "%s Angebote gespeichert in %s",
-        "cleared": "%s Angebote gelöscht.",
-        "usage": "Benutzung: /angebote export | anzahl | leeren"
       }
     }
   }

@@ -42,18 +42,6 @@
         "name": "Suggest timer in tooltip",
         "description": "Shows on auctions which key sets a reminder"
       },
-      "offers": {
-        "name": "Offers & CSV export"
-      },
-      "recordOffers": {
-        "name": "Record offers",
-        "description": "Remembers every offer seen in the auction house (local only)"
-      },
-      "exportOffers": {
-        "name": "Export as CSV",
-        "text": "Export",
-        "description": "Writes all offers to labymod-neo/configs/sigguard (also via /angebote export)"
-      },
       "highlight": {
         "name": "Slot colors"
       },
@@ -96,14 +84,6 @@
         "none": "No active reminders.",
         "entry": "• %s – ends %s, reminder %s",
         "usage": "Usage: /aht list | /aht clear"
-      },
-      "offers": {
-        "empty": "No offers recorded yet. Open the auction house and browse through it.",
-        "exported": "%s offers exported: %s",
-        "exportFailed": "Export failed: %s",
-        "count": "%s offers stored in %s",
-        "cleared": "%s offers deleted.",
-        "usage": "Usage: /angebote export | anzahl | leeren"
       }
     }
   }

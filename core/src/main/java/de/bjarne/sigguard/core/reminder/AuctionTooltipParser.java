@@ -9,14 +9,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Liest Restzeit, Gebot und Verkäufer aus den Tooltip-Zeilen des GG-Auktionshauses.
+ * Liest Restzeit und Gebot aus den Tooltip-Zeilen des GG-Auktionshauses.
  * Beispiel: "Verbleibende Zeit:" / "4 Minuten".
  */
 public final class AuctionTooltipParser {
 
   private static final String TIME_LABEL = "verbleibende zeit";
   private static final String BID_LABEL = "aktuelles gebot";
-  private static final List<String> SELLER_LABELS = List.of("verkäufer", "anbieter", "besitzer");
   private static final Pattern TIME_PART = Pattern.compile(
       "(\\d+)\\s*(tage?|d|stunden?|std|h|minuten?|min|m|sekunden?|sek|s)\\b");
 
@@ -36,16 +35,6 @@ public final class AuctionTooltipParser {
     return parseBid(lines).isPresent();
   }
 
-  // Im bisher gesehenen GG-Tooltip steht kein Verkäufer; dann bleibt das Feld leer
-  public static Optional<String> parseSeller(List<String> lines) {
-    for (String label : SELLER_LABELS) {
-      Optional<String> value = valueAfterLabel(lines, label);
-      if (value.isPresent()) {
-        return value.map(seller -> seller.split("\\s+")[0]);
-      }
-    }
-    return Optional.empty();
-  }
 
   /**
    * Ob der Spielername im Auktionsteil (ab "Aktuelles Gebot"/"Verbleibende Zeit") vorkommt,

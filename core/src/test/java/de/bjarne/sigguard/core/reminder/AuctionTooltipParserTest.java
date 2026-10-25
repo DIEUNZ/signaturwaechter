@@ -61,11 +61,8 @@ class AuctionTooltipParserTest {
   }
 
   @Test
-  void verkaeuferUndAuktionErkennen() {
+  void auktionErkennen() {
     assertTrue(AuctionTooltipParser.isAuction(TOOLTIP));
-    assertTrue(AuctionTooltipParser.parseSeller(TOOLTIP).isEmpty());
-    assertEquals("Max_Muster", AuctionTooltipParser.parseSeller(
-        List.of("Verkäufer: §aMax_Muster §7(online)")).orElseThrow());
     assertTrue(!AuctionTooltipParser.isAuction(List.of("Stein")));
   }
 

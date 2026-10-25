@@ -23,7 +23,7 @@ public class ItemSignatureService {
 
   private final SigGuardConfiguration config;
 
-  // Pro Item-Objekt gecachtes Ergebnis, damit Slot-Rahmen und Aufzeichnung nicht jeden Frame rechnen
+  // Pro Item-Objekt gecachtes Ergebnis, damit die Slot-Markierungen nicht jeden Frame rechnen
   private final Map<ItemStack, Analysis> slotCache =
       Collections.synchronizedMap(new WeakHashMap<>());
 
@@ -46,7 +46,7 @@ public class ItemSignatureService {
         .map(signature -> new Check(signature, this.detector.detect(signature.name()), plain));
   }
 
-  /** Analysiert ein Item ohne offenen Tooltip (Slot-Rahmen, Aufzeichnung), mit Cache. */
+  /** Analysiert ein Item ohne offenen Tooltip (Slot-Markierungen), mit Cache. */
   public Analysis analyze(ItemStack itemStack) {
     this.refreshIfSettingsChanged();
     return this.slotCache.computeIfAbsent(itemStack, stack -> {
@@ -56,7 +56,6 @@ public class ItemSignatureService {
         List<String> plain = toPlain(lines);
         boolean auction = AuctionTooltipParser.isAuction(plain);
         return new Analysis(
-            plain,
             this.check(lines),
             auction ? AuctionTooltipParser.stableKey(plain) : null,
             auction && AuctionTooltipParser.mentionsPlayerInAuction(
@@ -104,13 +103,11 @@ public class ItemSignatureService {
   }
 
   /**
-   * @param lines      Tooltip als reiner Text
    * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
    * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
    * @param ownBid     ob der eigene Name im Auktionsteil steht (z. B. Höchstbietender)
    */
   public record Analysis(
-      List<String> lines,
       Optional<Check> check,
       String auctionKey,
       boolean ownBid
