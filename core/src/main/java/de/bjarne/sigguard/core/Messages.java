@@ -60,7 +60,7 @@ public final class Messages {
     ChatExecutor chat = Laby.labyAPI().minecraft().chatExecutor();
     Component line = Component.empty();
     boolean red = true;
-    for (String word : message.trim().split("\s+")) {
+    for (String word : message.trim().split("\\s+")) {
       if (word.isEmpty()) {
         continue;
       }
@@ -71,8 +71,8 @@ public final class Messages {
           .decorate(TextDecoration.BOLD));
       red = !red;
     }
-    chat.displayClientMessage(Component.text(" "));
-    chat.displayClientMessage(line);
-    chat.displayClientMessage(Component.text(" "));
+    // Leerzeilen als Zeilenumbrüche in EINER Nachricht: einzelne leere Nachrichten
+    // werden vom Chat nicht angezeigt.
+    chat.displayClientMessage(Component.text("\n ").append(line).append(Component.text("\n ")));
   }
 }
