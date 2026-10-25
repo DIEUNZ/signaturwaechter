@@ -21,6 +21,10 @@
         "name": "Ähnlichkeits-Schwelle",
         "description": "Maximale Editierdistanz für \"Mögliche Fälschung\" (0 = nur verwechselbare Zeichen)"
       },
+      "icedOutCheck": {
+        "name": "Iced-Out-Fälschungen prüfen",
+        "description": "Warnt bei \"Iced Out\"-Items ohne Verzauberung, denn echte tragen immer eine."
+      },
       "slotFrame": {
         "name": "Roter Rahmen um Slots"
       },
@@ -84,6 +88,8 @@
       "warning": {
         "fake": "FÄLSCHUNG – imitiert %s",
         "suspect": "Mögliche Fälschung – ähnlich zu %s",
+        "icedOut": "FÄLSCHUNG – Iced Out ohne Verzauberung",
+        "chatIcedOut": "%s: Iced Out ohne Verzauberung, vermutlich gefälscht",
         "chat": "%s: signiert von %s"
       },
       "hint": {

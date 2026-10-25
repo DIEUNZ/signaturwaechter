@@ -7,6 +7,7 @@ import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.SigGuardConfiguration;
 import de.bjarne.sigguard.core.VersionCompat;
 import de.bjarne.sigguard.core.detect.DetectionResult;
+import de.bjarne.sigguard.core.detect.IcedOutDetector;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.ReminderManager;
@@ -56,6 +57,17 @@ public class TooltipListener {
 
       if (this.addon.configuration().chatWarning().get()) {
         this.warnOnceInChat(event.itemStack().getDisplayName(), check.get());
+      }
+    }
+
+    if (this.addon.configuration().icedOutCheck().get()
+        && IcedOutDetector.isFake(plain, !event.itemStack().getEnchantmentEntries().isEmpty())) {
+      lines.add(Component.empty());
+      lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.icedOut", NamedTextColor.RED));
+
+      if (this.addon.configuration().chatWarning().get()
+          && this.warnedItems.add("icedout|" + plain.get(0))) {
+        Messages.send("warning.chatIcedOut", plain.get(0));
       }
     }
 

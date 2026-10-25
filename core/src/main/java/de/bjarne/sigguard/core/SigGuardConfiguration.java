@@ -41,6 +41,9 @@ public class SigGuardConfiguration extends AddonConfig {
   private final ConfigProperty<Integer> threshold = new ConfigProperty<>(2);
 
   @SwitchSetting
+  private final ConfigProperty<Boolean> icedOutCheck = new ConfigProperty<>(true);
+
+  @SwitchSetting
   private final ConfigProperty<Boolean> slotFrame = new ConfigProperty<>(true);
 
   @SwitchSetting
@@ -115,6 +118,10 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Integer> threshold() {
     return this.threshold;
+  }
+
+  public ConfigProperty<Boolean> icedOutCheck() {
+    return this.icedOutCheck;
   }
 
   public ConfigProperty<Boolean> slotFrame() {

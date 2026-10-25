@@ -21,6 +21,10 @@
         "name": "Similarity threshold",
         "description": "Max edit distance for \"possible fake\" (0 = look-alike characters only)"
       },
+      "icedOutCheck": {
+        "name": "Check Iced Out fakes",
+        "description": "Warns about \"Iced Out\" items without an enchantment, because real ones always have one."
+      },
       "slotFrame": {
         "name": "Red slot frame"
       },
@@ -84,6 +88,8 @@
       "warning": {
         "fake": "FAKE – imitates %s",
         "suspect": "Possible fake – similar to %s",
+        "icedOut": "FAKE - Iced Out without enchantment",
+        "chatIcedOut": "%s: Iced Out without enchantment, probably fake",
         "chat": "%s: signed by %s"
       },
       "hint": {

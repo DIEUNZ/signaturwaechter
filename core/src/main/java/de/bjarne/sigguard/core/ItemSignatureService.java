@@ -1,6 +1,7 @@
 package de.bjarne.sigguard.core;
 
 import de.bjarne.sigguard.core.detect.DetectionResult;
+import de.bjarne.sigguard.core.detect.IcedOutDetector;
 import de.bjarne.sigguard.core.detect.SignatureDetector;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import de.bjarne.sigguard.core.extract.SignatureExtractor.Signature;
@@ -67,8 +68,11 @@ public class ItemSignatureService {
       List<String> plain = toPlain(lines);
       boolean auction = AuctionTooltipParser.isAuction(plain);
       Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(plain);
+      boolean icedOutFake = this.config.icedOutCheck().get()
+          && IcedOutDetector.isFake(plain, !itemStack.getEnchantmentEntries().isEmpty());
       Analysis analysis = new Analysis(
           this.check(lines),
+          icedOutFake,
           auction ? AuctionTooltipParser.stableKey(plain) : null,
           auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),
           remaining.isPresent() ? now + remaining.get().toMillis() : -1,
@@ -118,6 +122,7 @@ public class ItemSignatureService {
 
   /**
    * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
+   * @param icedOutFake "Iced Out"-Item ohne Verzauberung
    * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
    * @param ownBid     ob du auf die Auktion geboten hast (Höchstbietender oder Gebotslimit)
    * @param endsAtEstimate geschätzte Endzeit (Epoch-Millis) oder -1
@@ -125,6 +130,7 @@ public class ItemSignatureService {
    */
   public record Analysis(
       Optional<Check> check,
+      boolean icedOutFake,
       String auctionKey,
       boolean ownBid,
       long endsAtEstimate,
@@ -132,7 +138,8 @@ public class ItemSignatureService {
   ) {
 
     public boolean isWarning() {
-      return this.check.map(value -> value.result().verdict().isWarning()).orElse(false);
+      return this.icedOutFake
+          || this.check.map(value -> value.result().verdict().isWarning()).orElse(false);
     }
   }
 }
