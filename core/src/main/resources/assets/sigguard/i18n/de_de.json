@@ -25,6 +25,10 @@
         "name": "Iced-Out-Fälschungen prüfen",
         "description": "Warnt bei \"Iced Out\"-Items ohne Verzauberung, denn echte tragen immer eine."
       },
+      "spawnEggCheck": {
+        "name": "Falsch benannte Spawn-Eier prüfen",
+        "description": "Warnt, wenn der Name eines Spawn-Eis ein anderes Mob nennt als das Ei wirklich enthält."
+      },
       "slotFrame": {
         "name": "Roter Rahmen um Slots"
       },
@@ -90,6 +94,8 @@
         "suspect": "Mögliche Fälschung – ähnlich zu %s",
         "icedOut": "FÄLSCHUNG – Iced Out ohne Verzauberung",
         "chatIcedOut": "%s: Iced Out ohne Verzauberung, vermutlich gefälscht",
+        "spawnEgg": "ACHTUNG – das Ei enthält ein anderes Mob (%s)",
+        "chatSpawnEgg": "%s: Das Ei enthält ein anderes Mob (%s)",
         "chat": "%s: signiert von %s"
       },
       "hint": {

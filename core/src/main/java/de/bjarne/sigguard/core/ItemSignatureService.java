@@ -2,6 +2,7 @@ package de.bjarne.sigguard.core;
 
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
+import de.bjarne.sigguard.core.detect.SpawnEggDetector;
 import de.bjarne.sigguard.core.detect.SignatureDetector;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import de.bjarne.sigguard.core.extract.SignatureExtractor.Signature;
@@ -70,9 +71,11 @@ public class ItemSignatureService {
       Optional<Duration> remaining = AuctionTooltipParser.parseRemaining(plain);
       boolean icedOutFake = this.config.icedOutCheck().get()
           && IcedOutDetector.isFake(plain, !itemStack.getEnchantmentEntries().isEmpty());
+      boolean spawnEggFake = this.config.spawnEggCheck().get()
+          && SpawnEggDetector.isMismatch(itemId(itemStack), plain.isEmpty() ? null : plain.get(0));
       Analysis analysis = new Analysis(
           this.check(lines),
-          icedOutFake,
+          icedOutFake || spawnEggFake,
           auction ? AuctionTooltipParser.stableKey(plain) : null,
           auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),
           remaining.isPresent() ? now + remaining.get().toMillis() : -1,
@@ -82,6 +85,11 @@ public class ItemSignatureService {
     } finally {
       this.computingLines = false;
     }
+  }
+
+  /** Item-ID wie {@code minecraft:ghast_spawn_egg}. */
+  public static String itemId(ItemStack itemStack) {
+    return itemStack.getIdentifier().getNamespace() + ":" + itemStack.getIdentifier().getPath();
   }
 
   public boolean isComputingLines() {

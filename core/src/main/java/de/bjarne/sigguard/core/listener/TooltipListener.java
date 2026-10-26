@@ -8,6 +8,7 @@ import de.bjarne.sigguard.core.SigGuardConfiguration;
 import de.bjarne.sigguard.core.VersionCompat;
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
+import de.bjarne.sigguard.core.detect.SpawnEggDetector;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.ReminderManager;
@@ -68,6 +69,19 @@ public class TooltipListener {
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("icedout|" + plain.get(0))) {
         Messages.send("warning.chatIcedOut", plain.get(0));
+      }
+    }
+
+    String itemId = ItemSignatureService.itemId(event.itemStack());
+    if (this.addon.configuration().spawnEggCheck().get()
+        && SpawnEggDetector.isMismatch(itemId, plain.isEmpty() ? null : plain.get(0))) {
+      lines.add(Component.empty());
+      lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.spawnEgg",
+          NamedTextColor.RED, SpawnEggDetector.eggMob(itemId)));
+
+      if (this.addon.configuration().chatWarning().get()
+          && this.warnedItems.add("spawnegg|" + plain.get(0))) {
+        Messages.send("warning.chatSpawnEgg", plain.get(0), SpawnEggDetector.eggMob(itemId));
       }
     }
 

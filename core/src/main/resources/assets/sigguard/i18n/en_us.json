@@ -25,6 +25,10 @@
         "name": "Check Iced Out fakes",
         "description": "Warns about \"Iced Out\" items without an enchantment, because real ones always have one."
       },
+      "spawnEggCheck": {
+        "name": "Check mislabeled spawn eggs",
+        "description": "Warns when a spawn egg's name mentions a different mob than the egg really contains."
+      },
       "slotFrame": {
         "name": "Red slot frame"
       },
@@ -90,6 +94,8 @@
         "suspect": "Possible fake – similar to %s",
         "icedOut": "FAKE - Iced Out without enchantment",
         "chatIcedOut": "%s: Iced Out without enchantment, probably fake",
+        "spawnEgg": "WARNING - this egg contains a different mob (%s)",
+        "chatSpawnEgg": "%s: This egg contains a different mob (%s)",
         "chat": "%s: signed by %s"
       },
       "hint": {
