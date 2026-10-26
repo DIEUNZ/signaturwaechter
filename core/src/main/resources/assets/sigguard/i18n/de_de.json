@@ -29,6 +29,10 @@
         "name": "Falsch benannte Spawn-Eier prüfen",
         "description": "Warnt, wenn der Name eines Spawn-Eis ein anderes Mob nennt als das Ei wirklich enthält."
       },
+      "verifiedNote": {
+        "name": "Hinweis bei echten Items",
+        "description": "Zeigt im Tooltip eine grüne Zeile, warum das Addon ein Item für echt hält."
+      },
       "slotFrame": {
         "name": "Roter Rahmen um Slots"
       },
@@ -97,6 +101,12 @@
         "spawnEgg": "ACHTUNG – das Ei enthält ein anderes Mob (%s)",
         "chatSpawnEgg": "%s: Das Ei enthält ein anderes Mob (%s)",
         "chat": "%s: signiert von %s"
+      },
+      "verified": {
+        "signature": "Echt – signiert von %s",
+        "icedOut": "Echt – Iced Out mit Verzauberung (%s)",
+        "icedOutNoName": "Echt – Iced Out mit Verzauberung",
+        "spawnEgg": "Echt – Name passt zum Mob (%s)"
       },
       "hint": {
         "set": "Erinnerung gesetzt für %s – [%s] zum Entfernen",

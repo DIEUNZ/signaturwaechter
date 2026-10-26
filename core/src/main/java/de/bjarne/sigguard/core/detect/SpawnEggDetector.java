@@ -172,6 +172,15 @@ public final class SpawnEggDetector {
     return !named.isEmpty() && !named.contains(eggMob);
   }
 
+  /** {@code true}, wenn der Name genau das Mob des Eis nennt (und kein anderes). */
+  public static boolean isMatchForMob(String eggMob, String displayName) {
+    if (eggMob == null || displayName == null) {
+      return false;
+    }
+    List<String> named = mentionedMobs(displayName);
+    return !named.isEmpty() && named.contains(eggMob) && named.size() == 1;
+  }
+
   /** Mobs, die im Namen vorkommen (längste Namen zuerst, bereits Gefundenes wird entfernt). */
   static List<String> mentionedMobs(String displayName) {
     String text = " " + displayName.toLowerCase(Locale.ROOT)

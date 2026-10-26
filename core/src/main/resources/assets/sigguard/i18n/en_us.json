@@ -29,6 +29,10 @@
         "name": "Check mislabeled spawn eggs",
         "description": "Warns when a spawn egg's name mentions a different mob than the egg really contains."
       },
+      "verifiedNote": {
+        "name": "Note on genuine items",
+        "description": "Shows a green tooltip line explaining why the addon considers an item genuine."
+      },
       "slotFrame": {
         "name": "Red slot frame"
       },
@@ -97,6 +101,12 @@
         "spawnEgg": "WARNING - this egg contains a different mob (%s)",
         "chatSpawnEgg": "%s: This egg contains a different mob (%s)",
         "chat": "%s: signed by %s"
+      },
+      "verified": {
+        "signature": "Genuine - signed by %s",
+        "icedOut": "Genuine - Iced Out with enchantment (%s)",
+        "icedOutNoName": "Genuine - Iced Out with enchantment",
+        "spawnEgg": "Genuine - name matches the mob (%s)"
       },
       "hint": {
         "set": "Reminder set for %s – [%s] to remove",

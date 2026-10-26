@@ -35,13 +35,19 @@ public final class IcedOutDetector {
     return name.replaceAll("\\s+", " ").contains("iced out");
   }
 
-  /** Fallback für Versionen, in denen die Verzauberungen nicht aus den Item-Daten lesbar sind. */
-  static boolean hasEnchantmentLine(List<String> lines) {
+  /** Erste Zeile, die wie eine Verzauberung aussieht (z. B. "Luck of the Sea I"), sonst {@code null}. */
+  public static String enchantmentLine(List<String> lines) {
     for (int i = 1; i < lines.size(); i++) {
-      if (ENCHANT_LINE.matcher(lines.get(i).trim()).matches()) {
-        return true;
+      String line = lines.get(i).trim();
+      if (ENCHANT_LINE.matcher(line).matches()) {
+        return line;
       }
     }
-    return false;
+    return null;
+  }
+
+  /** Fallback für Versionen, in denen die Verzauberungen nicht aus den Item-Daten lesbar sind. */
+  static boolean hasEnchantmentLine(List<String> lines) {
+    return enchantmentLine(lines) != null;
   }
 }

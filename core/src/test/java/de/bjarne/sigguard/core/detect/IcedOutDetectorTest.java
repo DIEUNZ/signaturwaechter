@@ -45,6 +45,12 @@ class IcedOutDetectorTest {
   }
 
   @Test
+  void enchantmentLineIsReturned() {
+    assertTrue("Luck of the Sea I".equals(IcedOutDetector.enchantmentLine(REAL)));
+    assertTrue(IcedOutDetector.enchantmentLine(FAKE) == null);
+  }
+
+  @Test
   void titleVariantsAreRecognized() {
     assertTrue(IcedOutDetector.isIcedOut(List.of("*ICED OUT* Schaf")));
     assertTrue(IcedOutDetector.isIcedOut(List.of("Iced-Out Kuh")));

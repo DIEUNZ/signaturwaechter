@@ -13,6 +13,7 @@ public final class VersionCompat {
 
   public static final String WARNING = MODERN_FONT ? "⚠" : "!";
   public static final String CLOCK = MODERN_FONT ? "⏰" : "»";
+  public static final String CHECK = MODERN_FONT ? "✔" : "+";
 
   /** Notenblock-Ton; der Name hat sich mit 1.9 und 1.13 geändert. */
   public static final ResourceLocation REMINDER_SOUND = ResourceLocation.create("minecraft",

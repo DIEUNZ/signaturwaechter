@@ -22,6 +22,7 @@ import java.util.Set;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.key.Key;
+import net.labymod.api.client.world.item.ItemStack;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 
@@ -51,6 +52,7 @@ public class TooltipListener {
     List<String> plain = ItemSignatureService.toPlain(lines);
     this.addon.hoverTracker().update(event.itemStack(), plain);
 
+    int sizeBeforeChecks = lines.size();
     Optional<Check> check = this.service.check(lines);
     if (check.isPresent() && check.get().result().verdict().isWarning()) {
       lines.add(Component.empty());
@@ -85,7 +87,36 @@ public class TooltipListener {
       }
     }
 
+    if (this.addon.configuration().verifiedNote().get() && lines.size() == sizeBeforeChecks) {
+      this.addVerifiedNote(lines, plain, check, event.itemStack(), eggMob);
+    }
+
     this.addReminderHint(lines, plain);
+  }
+
+  // Grüne Zeile bei Items, die das Addon für echt hält (nur wenn keine Warnung angezeigt wurde)
+  private void addVerifiedNote(List<Component> lines, List<String> plain,
+      Optional<Check> check, ItemStack itemStack, String eggMob) {
+    String key = null;
+    Object[] args = new Object[0];
+
+    if (check.isPresent() && check.get().result().verdict() == SignatureVerdict.ECHT) {
+      key = "verified.signature";
+      args = new Object[] {check.get().signature().name()};
+    } else if (this.addon.configuration().icedOutCheck().get() && IcedOutDetector.isIcedOut(plain)) {
+      String enchantment = IcedOutDetector.enchantmentLine(plain);
+      key = enchantment != null ? "verified.icedOut" : "verified.icedOutNoName";
+      args = enchantment != null ? new Object[] {enchantment} : args;
+    } else if (this.addon.configuration().spawnEggCheck().get()
+        && SpawnEggDetector.isMatchForMob(eggMob, plain.isEmpty() ? null : plain.get(0))) {
+      key = "verified.spawnEgg";
+      args = new Object[] {eggMob};
+    }
+
+    if (key != null) {
+      lines.add(Component.empty());
+      lines.add(Messages.withSymbol(VersionCompat.CHECK, key, NamedTextColor.GREEN, args));
+    }
   }
 
   // Schlägt bei Auktionen einen Timer vor bzw. zeigt den gesetzten an

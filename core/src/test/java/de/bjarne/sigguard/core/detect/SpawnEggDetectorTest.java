@@ -59,6 +59,14 @@ class SpawnEggDetectorTest {
   }
 
   @Test
+  void matchingNameIsRecognizedAsGenuine() {
+    assertTrue(SpawnEggDetector.isMatchForMob("blaze", "*Iced Out* Kuhei") == false);
+    assertTrue(SpawnEggDetector.isMatchForMob("blaze", "*Iced Out* Lohenei"));
+    assertFalse(SpawnEggDetector.isMatchForMob("ghast", "Erschaffe skelett"));
+    assertFalse(SpawnEggDetector.isMatchForMob("ghast", "Zufälliges Spawnei"));
+  }
+
+  @Test
   void eggMobIsReadFromId() {
     assertTrue("ghast".equals(SpawnEggDetector.eggMob("minecraft:ghast_spawn_egg")));
   }
