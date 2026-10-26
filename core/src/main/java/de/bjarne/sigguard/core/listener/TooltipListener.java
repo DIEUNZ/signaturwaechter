@@ -77,7 +77,7 @@ public class TooltipListener {
         && SpawnEggDetector.isMismatch(itemId, plain.isEmpty() ? null : plain.get(0))) {
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.spawnEgg",
-          NamedTextColor.RED, SpawnEggDetector.eggMob(itemId)));
+          NamedTextColor.GOLD, SpawnEggDetector.eggMob(itemId)));
 
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("spawnegg|" + plain.get(0))) {

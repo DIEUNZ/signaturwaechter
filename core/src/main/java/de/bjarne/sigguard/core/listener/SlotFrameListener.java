@@ -1,6 +1,7 @@
 package de.bjarne.sigguard.core.listener;
 
 import de.bjarne.sigguard.core.ItemSignatureService;
+import de.bjarne.sigguard.core.ItemSignatureService.Analysis;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.render.item.GuiItemLocation;
@@ -12,6 +13,7 @@ import net.labymod.api.event.client.render.item.ItemDecorationRenderEvent;
 public class SlotFrameListener {
 
   private static final int RED = 0xFF_FF_20_20;
+  private static final int ORANGE = 0xFF_FF_90_10;
   private static final float SLOT_SIZE = 16F;
   private static final float FRAME_WIDTH = 2F;
 
@@ -32,9 +34,12 @@ public class SlotFrameListener {
       return;
     }
 
-    if (this.service.analyze(event.itemStack()).isWarning()) {
+    Analysis analysis = this.service.analyze(event.itemStack());
+    if (analysis.isWarning()) {
+      // Rot hat Vorrang vor Orange (falsch benanntes Spawn-Ei)
+      int color = analysis.isFake() ? RED : ORANGE;
       event.screenContext().canvas().submitRelativeOutlineRect(
-          event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, FRAME_WIDTH, RED, RED);
+          event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, FRAME_WIDTH, color, color);
     }
   }
 }

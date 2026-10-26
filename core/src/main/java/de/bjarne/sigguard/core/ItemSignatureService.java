@@ -75,7 +75,8 @@ public class ItemSignatureService {
           && SpawnEggDetector.isMismatch(itemId(itemStack), plain.isEmpty() ? null : plain.get(0));
       Analysis analysis = new Analysis(
           this.check(lines),
-          icedOutFake || spawnEggFake,
+          icedOutFake,
+          spawnEggFake,
           auction ? AuctionTooltipParser.stableKey(plain) : null,
           auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),
           remaining.isPresent() ? now + remaining.get().toMillis() : -1,
@@ -131,6 +132,7 @@ public class ItemSignatureService {
   /**
    * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
    * @param icedOutFake "Iced Out"-Item ohne Verzauberung
+   * @param spawnEggFake Spawn-Ei, dessen Name ein anderes Mob nennt
    * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
    * @param ownBid     ob du auf die Auktion geboten hast (Höchstbietender oder Gebotslimit)
    * @param endsAtEstimate geschätzte Endzeit (Epoch-Millis) oder -1
@@ -139,15 +141,22 @@ public class ItemSignatureService {
   public record Analysis(
       Optional<Check> check,
       boolean icedOutFake,
+      boolean spawnEggFake,
       String auctionKey,
       boolean ownBid,
       long endsAtEstimate,
       long computedAt
   ) {
 
-    public boolean isWarning() {
+    /** Rote Warnung: gefälschte Signatur oder Iced Out ohne Verzauberung. */
+    public boolean isFake() {
       return this.icedOutFake
           || this.check.map(value -> value.result().verdict().isWarning()).orElse(false);
+    }
+
+    /** Irgendeine Warnung (rot oder orange). */
+    public boolean isWarning() {
+      return this.isFake() || this.spawnEggFake;
     }
   }
 }
