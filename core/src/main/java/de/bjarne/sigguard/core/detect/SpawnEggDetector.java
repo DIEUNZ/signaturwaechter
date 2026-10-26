@@ -96,7 +96,51 @@ public final class SpawnEggDetector {
     mob("wither", "wither");
   }
 
+  // 1.8.9: Das Ei ist "minecraft:spawn_egg", das Mob steckt im Schadenswert (Entity-ID)
+  private static final Map<Integer, String> LEGACY_DATA = new LinkedHashMap<>();
+
+  // 1.9 bis 1.12: Mob-Name im Feld EntityTag.id, teils noch mit alten Namen
+  private static final Map<String, String> LEGACY_NAMES = new LinkedHashMap<>();
+
+  static {
+    int[] ids = {50, 51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 65, 66, 67, 68, 90, 91, 92, 93,
+        94, 95, 96, 98, 100, 101, 120};
+    String[] mobs = {"creeper", "skeleton", "spider", "zombie", "slime", "ghast",
+        "zombified_piglin", "enderman", "cave_spider", "silverfish", "blaze", "magma_cube", "bat",
+        "witch", "endermite", "guardian", "pig", "sheep", "cow", "chicken", "squid", "wolf",
+        "mooshroom", "ocelot", "horse", "rabbit", "villager"};
+    for (int i = 0; i < ids.length; i++) {
+      LEGACY_DATA.put(ids[i], mobs[i]);
+    }
+    LEGACY_NAMES.put("cavespider", "cave_spider");
+    LEGACY_NAMES.put("pigzombie", "zombified_piglin");
+    LEGACY_NAMES.put("lavaslime", "magma_cube");
+    LEGACY_NAMES.put("mushroomcow", "mooshroom");
+    LEGACY_NAMES.put("villagergolem", "iron_golem");
+    LEGACY_NAMES.put("snowman", "snow_golem");
+    LEGACY_NAMES.put("entityhorse", "horse");
+    LEGACY_NAMES.put("ozelot", "ocelot");
+    LEGACY_NAMES.put("witherboss", "wither");
+    LEGACY_NAMES.put("enderdragon", "ender_dragon");
+  }
+
   private SpawnEggDetector() {
+  }
+
+  /** Mob aus dem Schadenswert eines 1.8.9-Spawn-Eis, sonst {@code null}. */
+  public static String mobFromLegacyData(int data) {
+    return LEGACY_DATA.get(data);
+  }
+
+  /** Mob aus dem Feld EntityTag.id (1.9 bis 1.12, auch alte Namen wie "PigZombie"). */
+  public static String mobFromEntityTag(String entityId) {
+    if (entityId == null || entityId.isBlank()) {
+      return null;
+    }
+    String name = entityId.substring(entityId.indexOf(':') + 1).toLowerCase(Locale.ROOT);
+    String compact = name.replace("_", "");
+    String legacy = LEGACY_NAMES.get(compact);
+    return legacy != null ? legacy : name;
   }
 
   private static void mob(String id, String... names) {
@@ -116,7 +160,14 @@ public final class SpawnEggDetector {
     if (!id.endsWith(EGG_SUFFIX)) {
       return false;
     }
-    String eggMob = id.substring(0, id.length() - EGG_SUFFIX.length());
+    return isMismatchForMob(id.substring(0, id.length() - EGG_SUFFIX.length()), displayName);
+  }
+
+  /** Wie {@link #isMismatch}, wenn das Mob des Eis schon bekannt ist (z. B. "ghast"). */
+  public static boolean isMismatchForMob(String eggMob, String displayName) {
+    if (eggMob == null || displayName == null) {
+      return false;
+    }
     List<String> named = mentionedMobs(displayName);
     return !named.isEmpty() && !named.contains(eggMob);
   }

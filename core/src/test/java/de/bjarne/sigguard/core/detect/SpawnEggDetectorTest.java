@@ -44,6 +44,21 @@ class SpawnEggDetectorTest {
   }
 
   @Test
+  void legacyEggDataIsMapped() {
+    assertTrue("ghast".equals(SpawnEggDetector.mobFromLegacyData(56)));
+    assertTrue(SpawnEggDetector.isMismatchForMob(
+        SpawnEggDetector.mobFromLegacyData(56), "Erschaffe skelett"));
+  }
+
+  @Test
+  void entityTagNamesAreNormalized() {
+    assertTrue("ghast".equals(SpawnEggDetector.mobFromEntityTag("minecraft:ghast")));
+    assertTrue("zombified_piglin".equals(SpawnEggDetector.mobFromEntityTag("PigZombie")));
+    assertFalse(SpawnEggDetector.isMismatchForMob(
+        SpawnEggDetector.mobFromEntityTag("minecraft:skeleton"), "Erschaffe skelett"));
+  }
+
+  @Test
   void eggMobIsReadFromId() {
     assertTrue("ghast".equals(SpawnEggDetector.eggMob("minecraft:ghast_spawn_egg")));
   }

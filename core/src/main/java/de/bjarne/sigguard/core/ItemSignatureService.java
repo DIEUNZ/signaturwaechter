@@ -18,6 +18,7 @@ import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.serializer.plain.PlainTextComponentSerializer;
 import net.labymod.api.client.world.item.ItemStack;
+import net.labymod.api.nbt.tags.NBTTagCompound;
 
 /**
  * Verbindet Minecraft-Items mit der Erkennungslogik und cached Ergebnisse.
@@ -72,7 +73,7 @@ public class ItemSignatureService {
       boolean icedOutFake = this.config.icedOutCheck().get()
           && IcedOutDetector.isFake(plain, !itemStack.getEnchantmentEntries().isEmpty());
       boolean spawnEggFake = this.config.spawnEggCheck().get()
-          && SpawnEggDetector.isMismatch(itemId(itemStack), plain.isEmpty() ? null : plain.get(0));
+          && SpawnEggDetector.isMismatchForMob(eggMob(itemStack), plain.isEmpty() ? null : plain.get(0));
       Analysis analysis = new Analysis(
           this.check(lines),
           icedOutFake,
@@ -88,9 +89,31 @@ public class ItemSignatureService {
     }
   }
 
-  /** Item-ID wie {@code minecraft:ghast_spawn_egg}. */
-  public static String itemId(ItemStack itemStack) {
-    return itemStack.getIdentifier().getNamespace() + ":" + itemStack.getIdentifier().getPath();
+  /**
+   * Mob, das im Spawn-Ei steckt (z. B. "ghast"), oder {@code null}, wenn es kein Spawn-Ei ist.
+   * Neue Versionen: aus der Item-ID. 1.8.9: aus dem Schadenswert. 1.9 bis 1.12: aus EntityTag.id.
+   */
+  public static String eggMob(ItemStack itemStack) {
+    String path = itemStack.getIdentifier().getPath();
+    if (path.endsWith("_spawn_egg")) {
+      return path.substring(0, path.length() - "_spawn_egg".length());
+    }
+    if (!path.equals("spawn_egg")) {
+      return null;
+    }
+    try {
+      NBTTagCompound tag = itemStack.getNBTTag();
+      if (tag != null && tag.contains("EntityTag")) {
+        String fromTag = SpawnEggDetector.mobFromEntityTag(
+            tag.getCompound("EntityTag").getString("id"));
+        if (fromTag != null) {
+          return fromTag;
+        }
+      }
+    } catch (RuntimeException ignored) {
+      // Versionen ohne lesbare NBT-Daten: dann bleibt nur der Schadenswert
+    }
+    return SpawnEggDetector.mobFromLegacyData(itemStack.getLegacyItemData());
   }
 
   public boolean isComputingLines() {

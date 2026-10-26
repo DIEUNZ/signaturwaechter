@@ -72,16 +72,16 @@ public class TooltipListener {
       }
     }
 
-    String itemId = ItemSignatureService.itemId(event.itemStack());
+    String eggMob = ItemSignatureService.eggMob(event.itemStack());
     if (this.addon.configuration().spawnEggCheck().get()
-        && SpawnEggDetector.isMismatch(itemId, plain.isEmpty() ? null : plain.get(0))) {
+        && SpawnEggDetector.isMismatchForMob(eggMob, plain.isEmpty() ? null : plain.get(0))) {
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.spawnEgg",
-          NamedTextColor.GOLD, SpawnEggDetector.eggMob(itemId)));
+          NamedTextColor.GOLD, eggMob));
 
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("spawnegg|" + plain.get(0))) {
-        Messages.send("warning.chatSpawnEgg", plain.get(0), SpawnEggDetector.eggMob(itemId));
+        Messages.send("warning.chatSpawnEgg", plain.get(0), eggMob);
       }
     }
 
