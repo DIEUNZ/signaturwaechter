@@ -1,6 +1,7 @@
 package de.bjarne.sigguard.core;
 
 import de.bjarne.sigguard.core.commands.AuctionTimerCommand;
+import de.bjarne.sigguard.core.commands.StatusCommand;
 import de.bjarne.sigguard.core.listener.ReminderKeyListener;
 import de.bjarne.sigguard.core.listener.SlotFrameListener;
 import de.bjarne.sigguard.core.listener.SlotHighlightListener;
@@ -34,6 +35,7 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
     this.registerListener(new ReminderKeyListener(this));
     this.registerListener(this.reminders);
     this.registerCommand(new AuctionTimerCommand(this));
+    this.registerCommand(new StatusCommand(this));
 
     this.logger().info("AH-Fake-Warner aktiviert");
   }

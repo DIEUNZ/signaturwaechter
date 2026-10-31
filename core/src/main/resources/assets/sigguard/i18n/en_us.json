@@ -102,6 +102,12 @@
         "chatSpawnEgg": "%s: This egg contains a different mob (%s)",
         "chat": "%s: signed by %s"
       },
+      "status": {
+        "line": "Active - Iced Out check: %s, spawn egg check: %s, whitelist: %s, timers: %s",
+        "forum": "Forum thread:",
+        "on": "on",
+        "off": "off"
+      },
       "verified": {
         "signature": "Genuine - signed by %s",
         "icedOut": "Genuine - Iced Out with enchantment (%s)",
