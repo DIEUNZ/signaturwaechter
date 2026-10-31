@@ -102,12 +102,6 @@
         "chatSpawnEgg": "%s: Das Ei enthält ein anderes Mob (%s)",
         "chat": "%s: signiert von %s"
       },
-      "status": {
-        "line": "Aktiv – Iced-Out-Prüfung: %s, Spawn-Ei-Prüfung: %s, Whitelist: %s, Timer: %s",
-        "forum": "Forum-Thread:",
-        "on": "an",
-        "off": "aus"
-      },
       "verified": {
         "signature": "Echt – signiert von %s",
         "icedOut": "Echt – Iced Out mit Verzauberung (%s)",
