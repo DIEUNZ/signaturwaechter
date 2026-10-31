@@ -38,7 +38,7 @@ jobs:
         run: |
           BASE="$(tr -d '[:space:]' < release-base.txt)"
           LAST="$(git tag -l "v${BASE}.*" | sed "s/^v${BASE}\.//" | grep -E '^[0-9]+$' | sort -n | tail -1)"
-          NEXT=$(( ${LAST:-0} + 1 ))
+          NEXT=$(( ${LAST:--1} + 1 ))
           echo "VERSION=${BASE}.${NEXT}" >> "$GITHUB_ENV"
       - name: Bauen und testen
         run: ./gradlew build createReleaseJar --full-stacktrace
