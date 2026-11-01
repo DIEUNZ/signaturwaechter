@@ -33,6 +33,10 @@
         "name": "Hinweis bei echten Items",
         "description": "Zeigt im Tooltip eine grüne Zeile, warum das Addon ein Item für echt hält."
       },
+      "playerDetection": {
+        "name": "Andere Addon-Nutzer markieren",
+        "description": "Zeigt ein grünes Zeichen neben Spielern, die das Addon auch nutzen (Tabliste und Name). Dafür sendet das Addon alle 20 Sekunden seine Version über LabyMod an Spieler in der Nähe. Bei \"aus\" wird nichts gesendet und nichts angezeigt."
+      },
       "slotFrame": {
         "name": "Roter Rahmen um Slots"
       },

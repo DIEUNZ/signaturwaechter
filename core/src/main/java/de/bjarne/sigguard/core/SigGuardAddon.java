@@ -1,6 +1,8 @@
 package de.bjarne.sigguard.core;
 
 import de.bjarne.sigguard.core.commands.AuctionTimerCommand;
+import de.bjarne.sigguard.core.presence.PresenceNameTagListener;
+import de.bjarne.sigguard.core.presence.PresenceService;
 import de.bjarne.sigguard.core.listener.ReminderKeyListener;
 import de.bjarne.sigguard.core.listener.SlotFrameListener;
 import de.bjarne.sigguard.core.listener.SlotHighlightListener;
@@ -12,7 +14,8 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 
 /**
  * Einstiegspunkt: warnt vor gefälschten Signaturen und erinnert an Auktionen.
- * Liest nur lokale Item-Daten, sendet nichts an den Server.
+ * Liest nur lokale Item-Daten, sendet nichts an den Server. Einzige Ausnahme: die abschaltbare
+ * Erkennung anderer Addon-Nutzer (Version per LabyConnect).
  */
 @AddonMain
 public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
@@ -33,6 +36,9 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
     this.registerListener(new SlotHighlightListener(this, service));
     this.registerListener(new ReminderKeyListener(this));
     this.registerListener(this.reminders);
+    PresenceService presence = new PresenceService(this);
+    this.registerListener(presence);
+    this.registerListener(new PresenceNameTagListener(presence));
     this.registerCommand(new AuctionTimerCommand(this));
 
     this.logger().info("AH-Fake-Warner aktiviert");

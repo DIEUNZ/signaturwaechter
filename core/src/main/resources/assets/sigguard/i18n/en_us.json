@@ -33,6 +33,10 @@
         "name": "Note on genuine items",
         "description": "Shows a green tooltip line explaining why the addon considers an item genuine."
       },
+      "playerDetection": {
+        "name": "Mark other addon users",
+        "description": "Shows a green mark next to players who also use the addon (tab list and name). For this the addon sends its version every 20 seconds through LabyMod to nearby players. When off, nothing is sent and nothing is shown."
+      },
       "slotFrame": {
         "name": "Red slot frame"
       },

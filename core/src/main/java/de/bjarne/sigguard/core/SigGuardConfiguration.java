@@ -50,6 +50,9 @@ public class SigGuardConfiguration extends AddonConfig {
   private final ConfigProperty<Boolean> verifiedNote = new ConfigProperty<>(true);
 
   @SwitchSetting
+  private final ConfigProperty<Boolean> playerDetection = new ConfigProperty<>(true);
+
+  @SwitchSetting
   private final ConfigProperty<Boolean> slotFrame = new ConfigProperty<>(true);
 
   @SwitchSetting
@@ -136,6 +139,10 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Boolean> verifiedNote() {
     return this.verifiedNote;
+  }
+
+  public ConfigProperty<Boolean> playerDetection() {
+    return this.playerDetection;
   }
 
   public ConfigProperty<Boolean> slotFrame() {
