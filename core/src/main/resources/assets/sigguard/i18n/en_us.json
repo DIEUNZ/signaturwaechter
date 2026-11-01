@@ -134,7 +134,11 @@
         "cleared": "%s reminder(s) cleared.",
         "none": "No active reminders.",
         "entry": "• %s – ends %s, reminder %s",
-        "usage": "Usage: /aht list | /aht clear"
+        "usage": "Usage: /aht list | /aht clear | /aht collect"
+      },
+      "collect": {
+        "on": "Collect mode ON - seen auction items are saved locally to: %s",
+        "off": "Collect mode OFF. Collected items are in: %s"
       }
     }
   }

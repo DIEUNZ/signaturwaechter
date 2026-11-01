@@ -134,7 +134,11 @@
         "cleared": "%s Erinnerung(en) gelöscht.",
         "none": "Keine Erinnerungen aktiv.",
         "entry": "• %s – endet %s, Erinnerung %s",
-        "usage": "Benutzung: /aht list | /aht clear"
+        "usage": "Benutzung: /aht list | /aht clear | /aht sammeln"
+      },
+      "collect": {
+        "on": "Sammelmodus AN – gesehene Auktions-Items werden lokal gespeichert in: %s",
+        "off": "Sammelmodus AUS. Die gesammelten Items liegen in: %s"
       }
     }
   }

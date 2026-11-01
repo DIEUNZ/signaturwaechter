@@ -3,6 +3,7 @@ package de.bjarne.sigguard.core;
 import de.bjarne.sigguard.core.commands.AuctionTimerCommand;
 import de.bjarne.sigguard.core.presence.PresenceNameTagListener;
 import de.bjarne.sigguard.core.presence.PresenceService;
+import de.bjarne.sigguard.core.collect.CollectionStore;
 import de.bjarne.sigguard.core.listener.ReminderKeyListener;
 import de.bjarne.sigguard.core.listener.SlotFrameListener;
 import de.bjarne.sigguard.core.listener.SlotHighlightListener;
@@ -21,6 +22,7 @@ import net.labymod.api.models.addon.annotation.AddonMain;
 public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
 
   private final HoverTracker hoverTracker = new HoverTracker();
+  private final CollectionStore collection = new CollectionStore();
   private ReminderManager reminders;
 
   @Override
@@ -51,6 +53,10 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
 
   public HoverTracker hoverTracker() {
     return this.hoverTracker;
+  }
+
+  public CollectionStore collection() {
+    return this.collection;
   }
 
   public ReminderManager reminders() {

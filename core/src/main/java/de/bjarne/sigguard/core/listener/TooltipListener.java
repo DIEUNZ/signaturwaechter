@@ -8,6 +8,7 @@ import de.bjarne.sigguard.core.SigGuardConfiguration;
 import de.bjarne.sigguard.core.VersionCompat;
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
+import de.bjarne.sigguard.core.detect.ItemFingerprint;
 import de.bjarne.sigguard.core.detect.SpawnEggDetector;
 import de.bjarne.sigguard.core.detect.UnsignedRankDetector;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
@@ -104,7 +105,21 @@ public class TooltipListener {
       this.addVerifiedNote(lines, plain, check, event.itemStack(), eggMob);
     }
 
+    this.collect(event.itemStack(), plain, check);
+
     this.addReminderHint(lines, plain);
+  }
+
+  // Sammelmodus: Fingerabdruck jedes gesehenen Auktions-Items festhalten
+  private void collect(ItemStack itemStack, List<String> plain, Optional<Check> check) {
+    if (!this.addon.collection().enabled() || !AuctionTooltipParser.isAuction(plain)) {
+      return;
+    }
+    String material = itemStack.getIdentifier().getNamespace() + ':'
+        + itemStack.getIdentifier().getPath();
+    this.addon.collection().record(ItemFingerprint.of(plain, material,
+        check.map(value -> value.signature().name()).orElse(null),
+        check.map(value -> value.result().verdict().name()).orElse("KEINE_SIGNATUR")));
   }
 
   // Grüne Zeile bei Items, die das Addon für echt hält (nur wenn keine Warnung angezeigt wurde)

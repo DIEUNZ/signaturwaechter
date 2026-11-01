@@ -32,6 +32,10 @@ public class AuctionTimerCommand extends Command {
     switch (action) {
       case "clear" -> Messages.send("reminder.cleared", reminders.clear());
       case "list" -> this.list(reminders);
+      case "sammeln" -> {
+        boolean on = this.addon.collection().toggle();
+        Messages.send(on ? "collect.on" : "collect.off", this.addon.collection().file());
+      }
       default -> Messages.send("reminder.usage");
     }
     return true;
@@ -51,6 +55,6 @@ public class AuctionTimerCommand extends Command {
 
   @Override
   public List<String> complete(String[] arguments) {
-    return arguments.length <= 1 ? List.of("list", "clear") : List.of();
+    return arguments.length <= 1 ? List.of("list", "clear", "sammeln") : List.of();
   }
 }
