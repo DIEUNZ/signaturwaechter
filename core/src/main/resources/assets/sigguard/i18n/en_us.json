@@ -29,6 +29,10 @@
         "name": "Check mislabeled spawn eggs",
         "description": "Warns when a spawn egg's name mentions a different mob than the egg really contains."
       },
+      "adminTextCheck": {
+        "name": "Check admin texts without signature",
+        "description": "Warns when an item is worded like an admin item (e.g. \"Vergibt ein Farbrecht!\") but lacks the genuine signature."
+      },
       "verifiedNote": {
         "name": "Note on genuine items",
         "description": "Shows a green tooltip line explaining why the addon considers an item genuine."
@@ -102,6 +106,8 @@
         "suspect": "Possible fake – similar to %s",
         "icedOut": "FAKE - Iced Out without enchantment",
         "chatIcedOut": "%s: Iced Out without enchantment, probably fake",
+        "adminText": "FAKE - admin text without genuine signature",
+        "chatAdminText": "%s: looks like an admin item but lacks the genuine signature",
         "spawnEgg": "WARNING - this egg contains a different mob (%s)",
         "chatSpawnEgg": "%s: This egg contains a different mob (%s)",
         "chat": "%s: signed by %s"

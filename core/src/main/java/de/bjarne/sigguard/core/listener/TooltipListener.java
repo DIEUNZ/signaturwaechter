@@ -75,6 +75,18 @@ public class TooltipListener {
       }
     }
 
+    if (this.addon.configuration().adminTextCheck().get()
+        && ItemSignatureService.adminTextFake(plain, check)) {
+      lines.add(Component.empty());
+      lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.adminText",
+          NamedTextColor.RED));
+
+      if (this.addon.configuration().chatWarning().get()
+          && this.warnedItems.add("admintext|" + plain.get(0))) {
+        Messages.send("warning.chatAdminText", plain.get(0));
+      }
+    }
+
     String eggMob = ItemSignatureService.eggMob(event.itemStack());
     if (this.addon.configuration().spawnEggCheck().get()
         && SpawnEggDetector.isMismatchForMob(eggMob, plain.isEmpty() ? null : plain.get(0))) {

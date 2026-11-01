@@ -1,6 +1,9 @@
 package de.bjarne.sigguard.core;
 
+import de.bjarne.sigguard.core.detect.AdminTextDetector;
 import de.bjarne.sigguard.core.detect.DetectionResult;
+import de.bjarne.sigguard.core.detect.ItemFingerprint;
+import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
 import de.bjarne.sigguard.core.detect.SpawnEggDetector;
 import de.bjarne.sigguard.core.detect.SignatureDetector;
@@ -74,10 +77,13 @@ public class ItemSignatureService {
           && IcedOutDetector.isFake(plain, !itemStack.getEnchantmentEntries().isEmpty());
       boolean spawnEggFake = this.config.spawnEggCheck().get()
           && SpawnEggDetector.isMismatchForMob(eggMob(itemStack), plain.isEmpty() ? null : plain.get(0));
+      Optional<Check> check = this.check(lines);
+      boolean adminTextFake = this.config.adminTextCheck().get() && adminTextFake(plain, check);
       Analysis analysis = new Analysis(
-          this.check(lines),
+          check,
           icedOutFake,
           spawnEggFake,
+          adminTextFake,
           auction ? AuctionTooltipParser.stableKey(plain) : null,
           auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),
           remaining.isPresent() ? now + remaining.get().toMillis() : -1,
@@ -114,6 +120,14 @@ public class ItemSignatureService {
       // Versionen ohne lesbare NBT-Daten: dann bleibt nur der Schadenswert
     }
     return SpawnEggDetector.mobFromLegacyData(itemStack.getLegacyItemData());
+  }
+
+  /** Admin-typischer Text, aber ohne die echte Signatur aus der Whitelist. */
+  public static boolean adminTextFake(List<String> plain, Optional<Check> check) {
+    boolean signedByAdmin = check.isPresent()
+        && check.get().result().verdict() == SignatureVerdict.ECHT;
+    return AdminTextDetector.isFake(
+        ItemFingerprint.of(plain, "", null, "").description(), signedByAdmin);
   }
 
   public boolean isComputingLines() {
@@ -156,6 +170,7 @@ public class ItemSignatureService {
    * @param check      Signaturprüfung, falls eine Signatur gefunden wurde
    * @param icedOutFake "Iced Out"-Item ohne Verzauberung
    * @param spawnEggFake Spawn-Ei, dessen Name ein anderes Mob nennt
+   * @param adminTextFake Admin-typischer Text ohne die echte Signatur
    * @param auctionKey Kennung der Auktion oder {@code null}, wenn es keine ist
    * @param ownBid     ob du auf die Auktion geboten hast (Höchstbietender oder Gebotslimit)
    * @param endsAtEstimate geschätzte Endzeit (Epoch-Millis) oder -1
@@ -165,6 +180,7 @@ public class ItemSignatureService {
       Optional<Check> check,
       boolean icedOutFake,
       boolean spawnEggFake,
+      boolean adminTextFake,
       String auctionKey,
       boolean ownBid,
       long endsAtEstimate,
@@ -173,7 +189,7 @@ public class ItemSignatureService {
 
     /** Rote Warnung: gefälschte Signatur oder Iced Out ohne Verzauberung. */
     public boolean isFake() {
-      return this.icedOutFake
+      return this.icedOutFake || this.adminTextFake
           || this.check.map(value -> value.result().verdict().isWarning()).orElse(false);
     }
 
