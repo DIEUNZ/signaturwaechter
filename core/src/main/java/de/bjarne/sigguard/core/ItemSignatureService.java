@@ -4,7 +4,6 @@ import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
 import de.bjarne.sigguard.core.detect.SpawnEggDetector;
 import de.bjarne.sigguard.core.detect.SignatureDetector;
-import de.bjarne.sigguard.core.detect.UnsignedRankDetector;
 import de.bjarne.sigguard.core.extract.SignatureExtractor;
 import de.bjarne.sigguard.core.extract.SignatureExtractor.Signature;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
@@ -75,12 +74,9 @@ public class ItemSignatureService {
           && IcedOutDetector.isFake(plain, !itemStack.getEnchantmentEntries().isEmpty());
       boolean spawnEggFake = this.config.spawnEggCheck().get()
           && SpawnEggDetector.isMismatchForMob(eggMob(itemStack), plain.isEmpty() ? null : plain.get(0));
-      Optional<Check> check = this.check(lines);
-      boolean unsignedRank = this.config.unsignedRankCheck().get()
-          && UnsignedRankDetector.isFake(plain, check.isPresent());
       Analysis analysis = new Analysis(
-          check,
-          icedOutFake || unsignedRank,
+          this.check(lines),
+          icedOutFake,
           spawnEggFake,
           auction ? AuctionTooltipParser.stableKey(plain) : null,
           auction && AuctionTooltipParser.hasOwnBid(plain, Laby.labyAPI().getName()),

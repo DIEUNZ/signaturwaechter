@@ -29,10 +29,6 @@
         "name": "Check mislabeled spawn eggs",
         "description": "Warns when a spawn egg's name mentions a different mob than the egg really contains."
       },
-      "unsignedRankCheck": {
-        "name": "Check ranks without signature",
-        "description": "Warns about rank items (e.g. \"SUPREME-Rang\") that carry no signature. Genuine ranks are signed."
-      },
       "verifiedNote": {
         "name": "Note on genuine items",
         "description": "Shows a green tooltip line explaining why the addon considers an item genuine."
@@ -106,8 +102,6 @@
         "suspect": "Possible fake – similar to %s",
         "icedOut": "FAKE - Iced Out without enchantment",
         "chatIcedOut": "%s: Iced Out without enchantment, probably fake",
-        "unsignedRank": "FAKE - rank without signature",
-        "chatUnsignedRank": "%s: rank without signature, probably fake",
         "spawnEgg": "WARNING - this egg contains a different mob (%s)",
         "chatSpawnEgg": "%s: This egg contains a different mob (%s)",
         "chat": "%s: signed by %s"
