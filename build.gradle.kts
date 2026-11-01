@@ -27,7 +27,7 @@ labyMod {
         displayName = "AH-Fake-Warner"
         author = "bjarne"
         description = "Schützt im GrieferGames-Auktionshaus vor dem Kauf gefälschter Perks, Prefixe, Suffixe und anderer Admin-Items: Das Addon erkennt Fake-Signaturen, warnt dich und erinnert an ablaufende Auktionen. Prüfungen laufen lokal; optional erkennt das Addon andere Nutzer in der Nähe (abschaltbar)."
-        minecraftVersion = "1.8.9,1.12.2,26.3"
+        minecraftVersion = "1.8.9,1.12.2,1.21.11,26.3"
         version = rootProject.version.toString()
     }
 }
