@@ -47,6 +47,9 @@ public class SigGuardConfiguration extends AddonConfig {
   private final ConfigProperty<Boolean> spawnEggCheck = new ConfigProperty<>(true);
 
   @SwitchSetting
+  private final ConfigProperty<Boolean> unsignedRankCheck = new ConfigProperty<>(true);
+
+  @SwitchSetting
   private final ConfigProperty<Boolean> verifiedNote = new ConfigProperty<>(true);
 
   @SwitchSetting
@@ -135,6 +138,10 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Boolean> spawnEggCheck() {
     return this.spawnEggCheck;
+  }
+
+  public ConfigProperty<Boolean> unsignedRankCheck() {
+    return this.unsignedRankCheck;
   }
 
   public ConfigProperty<Boolean> verifiedNote() {

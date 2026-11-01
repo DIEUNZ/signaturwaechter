@@ -9,6 +9,7 @@ import de.bjarne.sigguard.core.VersionCompat;
 import de.bjarne.sigguard.core.detect.DetectionResult;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
 import de.bjarne.sigguard.core.detect.SpawnEggDetector;
+import de.bjarne.sigguard.core.detect.UnsignedRankDetector;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.ReminderManager;
@@ -71,6 +72,18 @@ public class TooltipListener {
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("icedout|" + plain.get(0))) {
         Messages.send("warning.chatIcedOut", plain.get(0));
+      }
+    }
+
+    if (this.addon.configuration().unsignedRankCheck().get()
+        && UnsignedRankDetector.isFake(plain, check.isPresent())) {
+      lines.add(Component.empty());
+      lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.unsignedRank",
+          NamedTextColor.RED));
+
+      if (this.addon.configuration().chatWarning().get()
+          && this.warnedItems.add("unsignedrank|" + plain.get(0))) {
+        Messages.send("warning.chatUnsignedRank", plain.get(0));
       }
     }
 
