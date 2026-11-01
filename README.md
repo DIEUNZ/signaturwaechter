@@ -13,7 +13,8 @@ Betrüger fälschen die Signatur mit fast gleichen Namen (z. B. `AbgegriefHD`, `
 - **Auktions-Erinnerung:** Taste über einem Item drücken (Standard `R`), das Addon erinnert dich kurz vor Auktionsende
 - **Farbmarkierung** im Auktionshaus für Items mit Timer und für Items, auf die du geboten hast
 - Whitelist, Empfindlichkeit und Farben in den Addon-Einstellungen anpassbar
-- Arbeitet **nur lokal**, es wird nichts an den Server oder Dritte gesendet
+- Prüfungen laufen **lokal**, es wird nichts an den GrieferGames-Server gesendet
+- Erkennt andere Addon-Nutzer in der Nähe (grünes Zeichen in Tabliste und über dem Kopf). Dafür sendet das Addon alle 20 Sekunden nur seine Versionsnummer über LabyMod an Spieler in der Nähe. Abschaltbar in den Einstellungen („Andere Addon-Nutzer markieren"); dann wird nichts gesendet und nichts angezeigt
 
 Befehle: `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie.
 
