@@ -20,6 +20,7 @@ public record ItemFingerprint(
 
   private static final Pattern SIGNATURE_LINE = Pattern.compile("(?i)^signiert von\\b.*");
   // Zufällige Kennung wie "1iD_j0cFiO_jxGswCf": ein einzelnes Wort ohne Leerzeichen
+  private static final Pattern CODE_LINE = Pattern.compile("^(?=.*\\d)[A-Za-z0-9_]{12,20}$");
   private static final Pattern ID_LINE = Pattern.compile("^[A-Za-z0-9_]{10,}$");
 
   /**
@@ -44,6 +45,48 @@ public record ItemFingerprint(
       description.add(line);
     }
     return new ItemFingerprint(name, material, description, signer, verdict);
+  }
+
+  /**
+   * Schlüssel der festen Beschreibung für den Katalog echter Items: Zahlen als "#", ohne
+   * technische Zeilen (Verzauberungen, Übersetzungsschlüssel).
+   */
+  public static String catalogKey(List<String> description) {
+    List<String> kept = new ArrayList<>();
+    for (String line : description) {
+      if (!line.startsWith("enchantment.") && !line.startsWith("potion.")
+          && !line.startsWith("item.") && !line.startsWith("attribute.")
+          && !line.startsWith("block.") && !line.startsWith("filled_map.")
+          && !IcedOutDetector.isEnchantmentLine(line)) {
+        kept.add(line.replaceAll("\\d+", "#"));
+      }
+    }
+    return String.join(" / ", kept);
+  }
+
+  /** Itemname mit Zahlen als "#" (aus "2 Sommer-Kisten" wird "# Sommer-Kisten"). */
+  public static String nameKey(String name) {
+    return name.replaceAll("\\d+", "#");
+  }
+
+  /**
+   * Bei Fälschungen steht die zufällige Kennung über der Signatur-Zeile, bei Originalen
+   * darunter.
+   */
+  public static boolean codeAboveSignature(List<String> lines) {
+    for (int i = 1; i < lines.size(); i++) {
+      if (!SIGNATURE_LINE.matcher(lines.get(i).trim()).matches()) {
+        continue;
+      }
+      for (int j = i - 1; j >= 1; j--) {
+        String previous = lines.get(j).trim();
+        if (!previous.isEmpty()) {
+          return CODE_LINE.matcher(previous).matches();
+        }
+      }
+      return false;
+    }
+    return false;
   }
 
   /** Gleiche Items ergeben denselben Schlüssel (zum Aussortieren von Doppelten). */

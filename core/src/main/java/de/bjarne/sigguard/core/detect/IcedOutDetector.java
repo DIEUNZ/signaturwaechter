@@ -35,6 +35,11 @@ public final class IcedOutDetector {
     return name.replaceAll("\\s+", " ").contains("iced out");
   }
 
+  /** Die Zeile sieht wie eine Verzauberung aus (Name + Stufe, z. B. "Protection I"). */
+  public static boolean isEnchantmentLine(String line) {
+    return ENCHANT_LINE.matcher(line.trim()).matches();
+  }
+
   /** Erste Zeile, die wie eine Verzauberung aussieht (z. B. "Luck of the Sea I"), sonst {@code null}. */
   public static String enchantmentLine(List<String> lines) {
     for (int i = 1; i < lines.size(); i++) {

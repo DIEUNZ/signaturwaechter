@@ -30,8 +30,8 @@
         "description": "Warnt, wenn der Name eines Spawn-Eis ein anderes Mob nennt als das Ei wirklich enthält."
       },
       "adminTextCheck": {
-        "name": "Admin-Texte ohne Signatur prüfen",
-        "description": "Warnt, wenn ein Item wie ein Admin-Item formuliert ist (z. B. \"Vergibt ein Farbrecht!\"), aber nicht die echte Signatur trägt."
+        "name": "Namen und Texte der Admin-Items prüfen",
+        "description": "Warnt, wenn Name, Text oder Aufbau nicht zu einem echten Admin-Item passen (z. B. umbenanntes Item, Code über der Signatur, Admin-Text ohne echte Signatur)."
       },
       "verifiedNote": {
         "name": "Hinweis bei echten Items",
@@ -107,7 +107,9 @@
         "icedOut": "FÄLSCHUNG – Iced Out ohne Verzauberung",
         "chatIcedOut": "%s: Iced Out ohne Verzauberung, vermutlich gefälscht",
         "adminText": "FÄLSCHUNG – Admin-Text ohne echte Signatur",
-        "chatAdminText": "%s: sieht aus wie ein Admin-Item, hat aber nicht die echte Signatur",
+        "codeAbove": "FÄLSCHUNG – Code steht über der Signatur",
+        "titleMismatch": "FÄLSCHUNG – das echte Item heißt „%s“",
+        "chatAdminText": "%s: Text oder Aufbau passen nicht zu einem echten Admin-Item",
         "spawnEgg": "ACHTUNG – das Ei enthält ein anderes Mob (%s)",
         "chatSpawnEgg": "%s: Das Ei enthält ein anderes Mob (%s)",
         "chat": "%s: signiert von %s"

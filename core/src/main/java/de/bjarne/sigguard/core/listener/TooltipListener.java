@@ -2,6 +2,7 @@ package de.bjarne.sigguard.core.listener;
 
 import de.bjarne.sigguard.core.ItemSignatureService;
 import de.bjarne.sigguard.core.ItemSignatureService.Check;
+import de.bjarne.sigguard.core.ItemSignatureService.Forgery;
 import de.bjarne.sigguard.core.Messages;
 import de.bjarne.sigguard.core.SigGuardAddon;
 import de.bjarne.sigguard.core.SigGuardConfiguration;
@@ -75,11 +76,12 @@ public class TooltipListener {
       }
     }
 
-    if (this.addon.configuration().adminTextCheck().get()
-        && ItemSignatureService.adminTextFake(plain, check)) {
+    Forgery forgery = this.addon.configuration().adminTextCheck().get()
+        ? ItemSignatureService.forgery(plain, check) : null;
+    if (forgery != null) {
       lines.add(Component.empty());
-      lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.adminText",
-          NamedTextColor.RED));
+      lines.add(Messages.withSymbol(VersionCompat.WARNING, forgery.key(), NamedTextColor.RED,
+          forgery.argument()));
 
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("admintext|" + plain.get(0))) {

@@ -2,6 +2,7 @@ package de.bjarne.sigguard.core;
 
 import de.bjarne.sigguard.core.detect.AdminTextDetector;
 import de.bjarne.sigguard.core.detect.DetectionResult;
+import de.bjarne.sigguard.core.detect.ItemCatalog;
 import de.bjarne.sigguard.core.detect.ItemFingerprint;
 import de.bjarne.sigguard.core.detect.SignatureVerdict;
 import de.bjarne.sigguard.core.detect.IcedOutDetector;
@@ -78,7 +79,7 @@ public class ItemSignatureService {
       boolean spawnEggFake = this.config.spawnEggCheck().get()
           && SpawnEggDetector.isMismatchForMob(eggMob(itemStack), plain.isEmpty() ? null : plain.get(0));
       Optional<Check> check = this.check(lines);
-      boolean adminTextFake = this.config.adminTextCheck().get() && adminTextFake(plain, check);
+      boolean adminTextFake = this.config.adminTextCheck().get() && forgery(plain, check) != null;
       Analysis analysis = new Analysis(
           check,
           icedOutFake,
@@ -122,12 +123,34 @@ public class ItemSignatureService {
     return SpawnEggDetector.mobFromLegacyData(itemStack.getLegacyItemData());
   }
 
-  /** Admin-typischer Text, aber ohne die echte Signatur aus der Whitelist. */
-  public static boolean adminTextFake(List<String> plain, Optional<Check> check) {
+  /**
+   * Prüft Text und Aufbau eines Items gegen echte Admin-Items. Reihenfolge: kopierte Kennung über
+   * der Signatur, Name passt nicht zum Katalog, Admin-Text ohne echte Signatur.
+   *
+   * @return Meldung (Schlüssel und Argument) oder {@code null}, wenn nichts auffällt
+   */
+  public static Forgery forgery(List<String> plain, Optional<Check> check) {
+    if (check.isPresent() && ItemFingerprint.codeAboveSignature(plain)) {
+      return new Forgery("warning.codeAbove", "");
+    }
+
+    List<String> description = ItemFingerprint.of(plain, "", null, "").description();
+    String expected = ItemCatalog.expectedName(ItemFingerprint.catalogKey(description));
+    if (expected != null && !plain.isEmpty()
+        && !expected.equals(ItemFingerprint.nameKey(plain.get(0).trim()))) {
+      return new Forgery("warning.titleMismatch", expected);
+    }
+
+    // GrieferGames signiert einige echte Items selbst (z. B. Galaxy Farbe)
     boolean signedByAdmin = check.isPresent()
-        && check.get().result().verdict() == SignatureVerdict.ECHT;
-    return AdminTextDetector.isFake(
-        ItemFingerprint.of(plain, "", null, "").description(), signedByAdmin);
+        && (check.get().result().verdict() == SignatureVerdict.ECHT
+        || "GrieferGames".equals(check.get().signature().name()));
+    return AdminTextDetector.isFake(description, signedByAdmin)
+        ? new Forgery("warning.adminText", "") : null;
+  }
+
+  /** Meldung zu einer erkannten Fälschung: i18n-Schlüssel und Argument. */
+  public record Forgery(String key, String argument) {
   }
 
   public boolean isComputingLines() {
