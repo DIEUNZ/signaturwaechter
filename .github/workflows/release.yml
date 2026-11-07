@@ -41,7 +41,9 @@ jobs:
           NEXT=$(( ${LAST:--1} + 1 ))
           echo "VERSION=${BASE}.${NEXT}" >> "$GITHUB_ENV"
       - name: Bauen und testen
-        run: ./gradlew build createReleaseJar --full-stacktrace
+        env:
+          AHT_WEBHOOK_URL: ${{ secrets.AHT_WEBHOOK_URL }}
+        run:./gradlew build createReleaseJar --full-stacktrace
       - name: Release veröffentlichen
         env:
           GH_TOKEN: ${{ github.token }}

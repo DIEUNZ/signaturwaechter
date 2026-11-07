@@ -26,3 +26,37 @@ tasks.named<JavaCompile>("compileTestJava") {
     options.annotationProcessorPath = files()
     options.compilerArgs.add("-proc:none")
 }
+
+// Webhook-URL für "Fehler melden": nur aus Gradle-Property bzw. Umgebungsvariable, nie im Quelltext.
+// Ohne Wert bleibt die Konstante leer und das Feature ist in diesem Build deaktiviert.
+val webhookUrl = providers.gradleProperty("ahtWebhookUrl")
+    .orElse(providers.environmentVariable("AHT_WEBHOOK_URL"))
+    .orElse("")
+val generatedDir = layout.buildDirectory.dir("generated/buildconfig")
+
+val generateBuildConfig = tasks.register("generateBuildConfig") {
+    val url = webhookUrl
+    val out = generatedDir
+    inputs.property("webhookUrl", url)
+    outputs.dir(out)
+    doLast {
+        val escaped = url.get().trim().replace("\\", "\\\\").replace("\"", "\\\"")
+        val file = out.get().file("de/bjarne/sigguard/core/BuildConfig.java").asFile
+        file.parentFile.mkdirs()
+        file.writeText(
+            "package de.bjarne.sigguard.core;\n\n" +
+                "/** Vom Build erzeugt, nicht committen. */\n" +
+                "public final class BuildConfig {\n\n" +
+                "  public static final String WEBHOOK_URL = \"$escaped\";\n\n" +
+                "  private BuildConfig() {\n  }\n}\n"
+        )
+    }
+}
+
+sourceSets.named("main") {
+    java.srcDir(generatedDir)
+}
+
+tasks.named("compileJava") {
+    dependsOn(generateBuildConfig)
+}
