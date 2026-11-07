@@ -84,12 +84,6 @@ public class ReportService {
         .append(button("report.btnCancel", command + "abbrechen", NamedTextColor.GRAY))
         .append(Component.text("\n "));
     Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(line);
-    // Chat öffnen (schließt dabei das Auktionshaus), damit man die Buttons direkt anklicken kann
-    // Erst sauber schließen, damit der Server das Fenster als geschlossen erkennt (sonst gehen Befehle nicht)
-    Laby.labyAPI().minecraft().executeOnRenderThread(() -> {
-      Laby.labyAPI().minecraft().minecraftWindow().closeScreen();
-      Laby.labyAPI().minecraft().openChat("");
-    });
   }
 
   /** Klick auf einen Eintrag der Auswahl ({@code /aht melden <id> echt|fake|abbrechen}). */
