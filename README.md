@@ -2,35 +2,58 @@
 
 ![GG-Auktionshaus-Fake-Warner](store-assets/thumbnail-1280x720.png)
 
-Schützt im **GrieferGames-Auktionshaus** vor dem Kauf **gefälschter Perks, Prefixe, Suffixe und anderer Admin-Items**.
+Schützt im **GrieferGames-Auktionshaus** vor dem Kauf **gefälschter Admin-Items**: Perks, Ränge, Prefixe, Suffixe, Farben, Schriften, Spawn-Eier und mehr.
 
-Betrüger fälschen die Signatur mit fast gleichen Namen (z. B. `AbgegriefHD`, `AbgegrieftHD` mit großem I statt l, `rn` statt `m`). Das Addon liest die Signatur lokal aus dem Item, vergleicht sie mit der Whitelist (Standard: `AbgegrieftHD`) und warnt dich **vor** dem Kauf.
+Betrüger fälschen Signaturen mit fast gleichen Namen (z. B. `AbgegriefHD`, `AbgegrieftHO`, `rn` statt `m`) oder benennen echte Items um. Das Addon prüft jedes Item, über das du mit der Maus fährst, und warnt dich **vor** dem Kauf.
 
-## Funktionen
+## Was das Addon erkennt
 
-- **Fake-Warnung** im Tooltip, optional mit rotem Slot-Rahmen und Chat-Hinweis
-- Erkennt Buchstabendreher, fehlende Buchstaben, ähnliche Zeichen (I/l, 0/O, rn/m, kyrillische Buchstaben)
+- **Gefälschte Signaturen:** Vergleich mit der Whitelist (Standard `AbgegrieftHD`), erkennt Buchstabendreher, fehlende Buchstaben und ähnliche Zeichen (I/l, 0/O, rn/m, kyrillische Buchstaben)
+- **Umbenannte Items:** Text passt zu einem bekannten echten Item, der Name aber nicht. Das Addon nennt den echten Namen. Grundlage ist ein Katalog aus gesammelten echten Items.
+- **Code über der Signatur:** Bei Originalen steht die Kennung unter der Signatur, bei Fakes oft darüber
+- **Admin-Text ohne echte Signatur**
+- **Iced-Out-Fakes:** Titel „Iced Out", aber ohne Verzauberung
+- **Falsch benannte Spawn-Eier:** Name nennt ein anderes Mob als im Ei steckt (oranger Rahmen)
+
+## Anzeige
+
+- Rote **Warnzeile im Tooltip** und **roter Slot-Rahmen**, optional ein einmaliger Chat-Hinweis
+- Grüne **„Echt"-Zeile** bei Items, die das Addon für echt hält, mit Grund (abschaltbar)
 - **Auktions-Erinnerung:** Taste über einem Item drücken (Standard `R`), das Addon erinnert dich kurz vor Auktionsende
-- **Farbmarkierung** im Auktionshaus für Items mit Timer und für Items, auf die du geboten hast
-- Whitelist, Empfindlichkeit und Farben in den Addon-Einstellungen anpassbar
-- Prüfungen laufen **lokal**, es wird nichts an den GrieferGames-Server gesendet
-- Erkennt andere Addon-Nutzer in der Nähe (grünes Zeichen in Tabliste und über dem Kopf). Dafür sendet das Addon alle 20 Sekunden nur seine Versionsnummer über LabyMod an Spieler in der Nähe. Abschaltbar in den Einstellungen („Andere Addon-Nutzer markieren"); dann wird nichts gesendet und nichts angezeigt
+- **Farbmarkierung** im Auktionshaus: Timer blau, eigenes Gebot grün, beides diagonal gestreift
+- **Andere Addon-Nutzer** in der Nähe bekommen ein grünes Zeichen in Tabliste und am Namen
+- Meldungen auf Deutsch (Standard), Englisch oder in der Spielsprache
 
-Befehle: `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie.
+## Datenschutz
+
+Alle Prüfungen laufen **lokal**, es wird nichts an den GrieferGames-Server gesendet. Einzige Ausnahme ist die Erkennung anderer Addon-Nutzer: Dafür sendet das Addon alle 20 Sekunden nur seine Versionsnummer über LabyMod an Spieler in der Nähe. Du schaltest sie in den Einstellungen unter „Andere Addon-Nutzer markieren" ab. Dann wird nichts gesendet und nichts angezeigt.
+
+## Befehle
+
+- `/aht list` zeigt deine Erinnerungen, `/aht clear` löscht sie
+- `/aht sammeln` schaltet den Sammelmodus um: Gesehene Auktions-Items werden lokal in `ah-fake-warner-sammlung.jsonl` im Spielordner gespeichert. Aus diesen Dateien wächst der Katalog echter Items.
 
 ## Installation
 
-1. Die neueste `ah-fake-warner.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
+1. Die neueste `ah-fake-warner-<Version>.jar` unter [Releases](https://github.com/DIEUNZ/signaturwaechter/releases/latest) herunterladen.
 2. In den Ordner `LabyMod/addons` legen (im Minecraft-Verzeichnis, `.minecraft/labymod-neo/addons`).
 3. Spiel neu starten.
 
-**Update:** Die neue `ah-fake-warner.jar` einfach in den Ordner `addons` legen und die alte überschreiben. Es darf nur eine Jar des Addons dort liegen (auch nicht zusätzlich die aus dem LabyMod-Store).
+**Update:** Alte Jar des Addons vorher löschen. Es darf nur eine Jar des Addons im Ordner liegen (auch nicht zusätzlich die aus dem LabyMod-Store).
 
-**Unterstützt:** LabyMod 4 mit Minecraft 1.8.9, 1.12.2 und 26.3. **Nicht** für LabyMod 3.
+**Unterstützt:** LabyMod 4 mit Minecraft 1.8.9, 1.12.2, 1.21.11 und 26.3. Diese Jar ist **nicht** für LabyMod 3.
+
+## Hinweis
+
+Das Addon ist keine Garantie. Es vergleicht mit den Items, die bisher gesehen wurden. Neue oder geänderte echte Items können falsch markiert, neue Fakes übersehen werden. Kaufe nichts allein wegen einer grünen Zeile.
 
 ## Support
 
-Fragen und Wünsche: [Discord](https://discord.gg/sCex8JNTGS) oder auf GrieferGames an `die_unz`.
+Fragen, Fehler, Fake-Screenshots und Wünsche: [Discord](https://discord.gg/sCex8JNTGS) oder auf GrieferGames an `die_unz`.
+
+## Entwicklung
+
+Java 21, Gradle (`./gradlew build`, `./gradlew createReleaseJar`). Jeder Push auf `master` erstellt ein GitHub-Release `v<Basis>.<X>`, die Basis steht in `release-base.txt`. Commit-Betreffzeilen erscheinen als „Was ist neu?" im Discord; Unsichtbares beginnt mit `intern: `.
 
 ## Lizenz
 
