@@ -85,7 +85,7 @@ public class ReportService {
         .append(Component.text("\n "));
     Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(line);
     // Chat öffnen (schließt dabei das Auktionshaus), damit man die Buttons direkt anklicken kann
-    Laby.labyAPI().minecraft().chatExecutor().insertText(command);
+    Laby.labyAPI().minecraft().executeOnRenderThread(() -> Laby.labyAPI().minecraft().openChat(command));
   }
 
   /** Klick auf einen Eintrag der Auswahl ({@code /aht melden <id> echt|fake|abbrechen}). */
