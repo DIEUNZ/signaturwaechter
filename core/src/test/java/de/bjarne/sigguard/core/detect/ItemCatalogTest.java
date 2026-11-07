@@ -36,6 +36,13 @@ class ItemCatalogTest {
   }
 
   @Test
+  void singularAndPluralNamesAreTheSameItem() {
+    assertEquals(ItemFingerprint.nameKey("1 Vote-Kiste"), ItemFingerprint.nameKey("# Vote-Kisten"));
+    assertEquals(ItemFingerprint.nameKey("7 Sommer-Kisten"),
+        ItemFingerprint.nameKey("# Sommer-Kisten"));
+  }
+
+  @Test
   void unknownDescriptionHasNoExpectedName() {
     assertTrue(expectedFor(List.of("Irgendein Item", "Ganz neuer Text", "░")) == null);
   }

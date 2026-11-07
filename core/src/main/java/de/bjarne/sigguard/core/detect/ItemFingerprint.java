@@ -64,9 +64,12 @@ public record ItemFingerprint(
     return String.join(" / ", kept);
   }
 
-  /** Itemname mit Zahlen als "#" (aus "2 Sommer-Kisten" wird "# Sommer-Kisten"). */
+  /**
+   * Itemname zum Vergleichen: Zahlen als "#", ohne Mehrzahl-n ("2 Sommer-Kisten" und
+   * "1 Sommer-Kiste" ergeben denselben Schlüssel).
+   */
   public static String nameKey(String name) {
-    return name.replaceAll("\\d+", "#");
+    return name.replaceAll("\\d+", "#").replaceAll("en$", "e");
   }
 
   /**

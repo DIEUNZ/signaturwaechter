@@ -137,7 +137,8 @@ public class ItemSignatureService {
     List<String> description = ItemFingerprint.of(plain, "", null, "").description();
     String expected = ItemCatalog.expectedName(ItemFingerprint.catalogKey(description));
     if (expected != null && !plain.isEmpty()
-        && !expected.equals(ItemFingerprint.nameKey(plain.get(0).trim()))) {
+        && !ItemFingerprint.nameKey(expected)
+        .equals(ItemFingerprint.nameKey(plain.get(0).trim()))) {
       return new Forgery("warning.titleMismatch", expected);
     }
 
