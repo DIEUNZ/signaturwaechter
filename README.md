@@ -21,12 +21,17 @@ Betrüger fälschen Signaturen mit fast gleichen Namen (z. B. `AbgegriefHD`, `Ab
 - Grüne **„Echt"-Zeile** bei Items, die das Addon für echt hält, mit Grund (abschaltbar)
 - **Auktions-Erinnerung:** Taste über einem Item drücken (Standard `R`), das Addon erinnert dich kurz vor Auktionsende
 - **Farbmarkierung** im Auktionshaus: Timer blau, eigenes Gebot grün, beides diagonal gestreift
+- **Info-Panel** neben dem Auktionshaus-Fenster: deine aktuell eingestellten Tasten, eine Farblegende, die Befehle und der Status (Erinnerungen, Sammelmodus, Version). Seite und einzelne Abschnitte stellst du in den Einstellungen ein. Fehlt auf einer Seite der Platz, wechselt das Panel auf die andere.
+- **Fehler melden:** Taste über einem Item drücken (Standard `K`). Im Chat erscheint eine Auswahl „Echtes Item als Fake markiert" / „Fake nicht erkannt" / „Abbrechen". Erst nach deinem Klick wird gemeldet.
 - **Andere Addon-Nutzer** in der Nähe bekommen ein grünes Zeichen in Tabliste und am Namen
 - Meldungen auf Deutsch (Standard), Englisch oder in der Spielsprache
 
 ## Datenschutz
 
-Alle Prüfungen laufen **lokal**, es wird nichts an den GrieferGames-Server gesendet. Einzige Ausnahme ist die Erkennung anderer Addon-Nutzer: Dafür sendet das Addon alle 20 Sekunden nur seine Versionsnummer über LabyMod an Spieler in der Nähe. Du schaltest sie in den Einstellungen unter „Andere Addon-Nutzer markieren" ab. Dann wird nichts gesendet und nichts angezeigt.
+Alle Prüfungen laufen **lokal**, es wird nichts an den GrieferGames-Server gesendet. Es gibt zwei Ausnahmen:
+
+- **Erkennung anderer Addon-Nutzer:** Das Addon sendet alle 20 Sekunden nur seine Versionsnummer über LabyMod an Spieler in der Nähe. Abschaltbar unter „Andere Addon-Nutzer markieren". Dann wird nichts gesendet und nichts angezeigt.
+- **Fehler melden:** Nur wenn du die Melde-Taste drückst **und** im Chat eine Auswahl anklickst, geht eine Meldung an einen Discord-Kanal des Entwicklers. Sie enthält: Fehlerart, Itemname mit Farbcodes, die komplette Lore, die NBT-Daten des Items, das Urteil des Addons samt Begründung, Addon- und Minecraft-Version, **deinen Spielernamen** und die Uhrzeit. Pro Client gilt eine Wartezeit von 30 Sekunden, dasselbe Item lässt sich pro Sitzung nur einmal melden. Abschaltbar unter „Fehlermeldungen erlauben". Dann reagiert die Taste nicht und nichts wird gesendet. In selbst gebauten Versionen ist das Melden deaktiviert, solange keine Webhook-URL beim Build gesetzt ist.
 
 ## Befehle
 

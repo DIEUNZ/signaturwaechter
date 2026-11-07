@@ -16,6 +16,7 @@ import de.bjarne.sigguard.core.reminder.AuctionTooltipParser;
 import de.bjarne.sigguard.core.reminder.ReminderManager;
 import de.bjarne.sigguard.core.reminder.ReminderManager.Reminder;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -52,11 +53,14 @@ public class TooltipListener {
 
     List<Component> lines = event.getTooltipLines();
     List<String> plain = ItemSignatureService.toPlain(lines);
-    this.addon.hoverTracker().update(event.itemStack(), plain);
+    List<Component> rawLines = List.copyOf(lines);
 
     int sizeBeforeChecks = lines.size();
+    // Sprachunabhängige Kürzel für die Fehlermeldung (maschinenlesbare Zeile)
+    List<String> codes = new ArrayList<>();
     Optional<Check> check = this.service.check(lines);
     if (check.isPresent() && check.get().result().verdict().isWarning()) {
+      codes.add("signature:" + check.get().result().verdict().name());
       lines.add(Component.empty());
       lines.add(warningLine(check.get().result()));
 
@@ -69,6 +73,7 @@ public class TooltipListener {
         && IcedOutDetector.isFake(plain, !event.itemStack().getEnchantmentEntries().isEmpty())) {
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.icedOut", NamedTextColor.RED));
+      codes.add("icedOut");
 
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("icedout|" + plain.get(0))) {
@@ -79,6 +84,8 @@ public class TooltipListener {
     Forgery forgery = this.addon.configuration().adminTextCheck().get()
         ? ItemSignatureService.forgery(plain, check) : null;
     if (forgery != null) {
+      codes.add(forgery.key().replace("warning.", "")
+          + (forgery.argument().isEmpty() ? "" : ":" + forgery.argument()));
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.WARNING, forgery.key(), NamedTextColor.RED,
           forgery.argument()));
@@ -95,6 +102,7 @@ public class TooltipListener {
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.WARNING, "warning.spawnEgg",
           NamedTextColor.GOLD, eggMob));
+      codes.add("spawnEgg:" + eggMob);
 
       if (this.addon.configuration().chatWarning().get()
           && this.warnedItems.add("spawnegg|" + plain.get(0))) {
@@ -103,10 +111,20 @@ public class TooltipListener {
     }
 
     if (this.addon.configuration().verifiedNote().get() && lines.size() == sizeBeforeChecks) {
-      this.addVerifiedNote(lines, plain, check, event.itemStack(), eggMob);
+      String note = this.addVerifiedNote(lines, plain, check, event.itemStack(), eggMob);
+      if (note != null) {
+        codes.add(note.replace('.', ':'));
+      }
     }
 
     this.collect(event.itemStack(), plain, check);
+
+    List<String> verdict = new ArrayList<>(
+        ItemSignatureService.toPlain(lines.subList(sizeBeforeChecks, lines.size())));
+    verdict.removeIf(String::isBlank);
+    this.addon.hoverTracker().update(event.itemStack(), plain, rawLines, verdict, codes,
+        check.map(value -> value.signature().name()).orElse(null),
+        check.map(value -> value.result().verdict().name()).orElse("KEINE_SIGNATUR"));
 
     this.addReminderHint(lines, plain);
   }
@@ -123,8 +141,9 @@ public class TooltipListener {
         check.map(value -> value.result().verdict().name()).orElse("KEINE_SIGNATUR")));
   }
 
-  // Grüne Zeile bei Items, die das Addon für echt hält (nur wenn keine Warnung angezeigt wurde)
-  private void addVerifiedNote(List<Component> lines, List<String> plain,
+  // Grüne Zeile bei Items, die das Addon für echt hält (nur wenn keine Warnung angezeigt wurde);
+  // gibt den i18n-Schlüssel der Zeile zurück oder null
+  private String addVerifiedNote(List<Component> lines, List<String> plain,
       Optional<Check> check, ItemStack itemStack, String eggMob) {
     String key = null;
     Object[] args = new Object[0];
@@ -146,6 +165,7 @@ public class TooltipListener {
       lines.add(Component.empty());
       lines.add(Messages.withSymbol(VersionCompat.CHECK, key, NamedTextColor.GREEN, args));
     }
+    return key;
   }
 
   // Schlägt bei Auktionen einen Timer vor bzw. zeigt den gesetzten an

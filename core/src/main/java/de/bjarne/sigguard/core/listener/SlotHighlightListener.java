@@ -55,7 +55,7 @@ public class SlotHighlightListener {
     int bidColor = argb(config.bidColor().get());
     int reminderColor = argb(config.reminderColor().get());
     if (bid && reminder) {
-      this.drawStripes(canvas, event.x(), event.y(), bidColor, reminderColor);
+      drawStripes(canvas, event.x(), event.y(), (int) SLOT_SIZE, bidColor, reminderColor);
     } else {
       int color = bid ? bidColor : reminderColor;
       canvas.submitRelativeRect(event.x(), event.y(), SLOT_SIZE, SLOT_SIZE, color);
@@ -63,8 +63,8 @@ public class SlotHighlightListener {
   }
 
   // Diagonale Streifen im Wechsel (Gebot / Timer), zeilenweise in Abschnitten gezeichnet
-  private void drawStripes(ScreenCanvas canvas, float x, float y, int first, int second) {
-    int size = (int) SLOT_SIZE;
+  static void drawStripes(ScreenCanvas canvas, float x, float y, int size, int first,
+      int second) {
     for (int row = 0; row < size; row++) {
       int column = 0;
       while (column < size) {
@@ -78,7 +78,7 @@ public class SlotHighlightListener {
   }
 
   // Farbe inkl. der im Farbwähler eingestellten Transparenz
-  private static int argb(Color color) {
+  static int argb(Color color) {
     return (color.getAlpha() << 24) | (color.get() & 0x00_FF_FF_FF);
   }
 }

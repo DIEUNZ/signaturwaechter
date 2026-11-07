@@ -65,6 +65,38 @@
         "name": "Suggest timer in tooltip",
         "description": "Shows on auctions which key sets a reminder"
       },
+      "reportEnabled": {
+        "name": "Allow error reports",
+        "description": "Lets you report an item with a key (genuine item marked as fake, or fake not detected). Data is only sent after you choose in the chat. When off, the key does nothing."
+      },
+      "reportKey": {
+        "name": "Key: report error (while hovering)",
+        "description": "Press over an item to start an error report"
+      },
+      "panelEnabled": {
+        "name": "Info panel in the auction house",
+        "description": "Shows the addon's keys, color legend, commands and status next to the auction house window."
+      },
+      "panelSide": {
+        "name": "Panel side",
+        "description": "Side next to the window. If there is no room there, the panel switches to the other side automatically.",
+        "entries": {
+          "right": "Right",
+          "left": "Left"
+        }
+      },
+      "panelKeys": {
+        "name": "Panel: keys"
+      },
+      "panelLegend": {
+        "name": "Panel: color legend"
+      },
+      "panelCommands": {
+        "name": "Panel: commands"
+      },
+      "panelStatus": {
+        "name": "Panel: status"
+      },
       "highlightReminder": {
         "name": "Color slots with a timer"
       },
@@ -84,6 +116,9 @@
         },
         "reminder": {
           "name": "Auction reminder"
+        },
+        "panel": {
+          "name": "Info panel"
         },
         "highlight": {
           "name": "Slot colors"
@@ -137,6 +172,44 @@
         "none": "No active reminders.",
         "entry": "• %s – ends %s, reminder %s",
         "usage": "Usage: /aht list | /aht clear | /aht collect"
+      },
+      "panel": {
+        "keys": "Keys",
+        "keyReminder": "Reminder",
+        "keyReport": "Report error",
+        "unbound": "not bound",
+        "legend": "Color legend",
+        "legendFake": "Fake",
+        "legendEgg": "Mislabeled spawn egg",
+        "legendReal": "Genuine (green line)",
+        "legendTimer": "Timer set",
+        "legendBid": "Own bid",
+        "legendBoth": "Bid and timer",
+        "commands": "Commands",
+        "cmdList": "Show reminders",
+        "cmdClear": "Clear reminders",
+        "cmdCollect": "Collect mode on/off",
+        "status": "Status",
+        "statusReminders": "Reminders",
+        "statusCollect": "Collect mode",
+        "statusVersion": "Addon version",
+        "none": "none",
+        "next": "(next in %s min.)",
+        "on": "on",
+        "off": "off"
+      },
+      "report": {
+        "prompt": "What is wrong with \"%s\"?",
+        "btnReal": "Genuine item marked as fake",
+        "btnMissed": "Fake not detected",
+        "btnCancel": "Cancel",
+        "sent": "Report sent, thank you!",
+        "failed": "The report could not be sent (%s). Please try again later.",
+        "cooldown": "Please wait %s more seconds before the next report.",
+        "duplicate": "You have already reported this item in this session.",
+        "expired": "The selection has expired. Press the key over the item again.",
+        "cancelled": "Report cancelled.",
+        "disabledBuild": "Error reports are disabled in this build."
       },
       "collect": {
         "on": "Collect mode ON - seen auction items are saved locally to: %s",

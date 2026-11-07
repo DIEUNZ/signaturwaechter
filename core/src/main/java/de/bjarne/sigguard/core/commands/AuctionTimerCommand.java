@@ -32,6 +32,13 @@ public class AuctionTimerCommand extends Command {
     switch (action) {
       case "clear" -> Messages.send("reminder.cleared", reminders.clear());
       case "list" -> this.list(reminders);
+      case "melden" -> {
+        if (arguments.length == 3) {
+          this.addon.reports().choose(arguments[1], arguments[2].toLowerCase());
+        } else {
+          Messages.send("reminder.usage");
+        }
+      }
       case "sammeln" -> {
         boolean on = this.addon.collection().toggle();
         Messages.send(on ? "collect.on" : "collect.off", this.addon.collection().file());

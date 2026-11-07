@@ -4,7 +4,10 @@ import de.bjarne.sigguard.core.commands.AuctionTimerCommand;
 import de.bjarne.sigguard.core.presence.PresenceNameTagListener;
 import de.bjarne.sigguard.core.presence.PresenceService;
 import de.bjarne.sigguard.core.collect.CollectionStore;
+import de.bjarne.sigguard.core.listener.InfoPanelListener;
 import de.bjarne.sigguard.core.listener.ReminderKeyListener;
+import de.bjarne.sigguard.core.listener.ReportKeyListener;
+import de.bjarne.sigguard.core.report.ReportService;
 import de.bjarne.sigguard.core.listener.SlotFrameListener;
 import de.bjarne.sigguard.core.listener.SlotHighlightListener;
 import de.bjarne.sigguard.core.listener.TooltipListener;
@@ -23,6 +26,7 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
 
   private final HoverTracker hoverTracker = new HoverTracker();
   private final CollectionStore collection = new CollectionStore();
+  private final ReportService reports = new ReportService(this);
   private ReminderManager reminders;
 
   @Override
@@ -37,6 +41,8 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
     this.registerListener(new SlotFrameListener(this, service));
     this.registerListener(new SlotHighlightListener(this, service));
     this.registerListener(new ReminderKeyListener(this));
+    this.registerListener(new ReportKeyListener(this));
+    this.registerListener(new InfoPanelListener(this));
     this.registerListener(this.reminders);
     PresenceService presence = new PresenceService(this);
     this.registerListener(presence);
@@ -53,6 +59,10 @@ public class SigGuardAddon extends LabyAddon<SigGuardConfiguration> {
 
   public HoverTracker hoverTracker() {
     return this.hoverTracker;
+  }
+
+  public ReportService reports() {
+    return this.reports;
   }
 
   public CollectionStore collection() {

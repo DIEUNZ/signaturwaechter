@@ -65,6 +65,38 @@
         "name": "Timer im Tooltip vorschlagen",
         "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"
       },
+      "reportEnabled": {
+        "name": "Fehlermeldungen erlauben",
+        "description": "Erlaubt, per Taste ein Item zu melden (echtes Item als Fake markiert oder Fake nicht erkannt). Gesendet wird nur nach deiner Auswahl im Chat. Bei \"aus\" reagiert die Taste nicht."
+      },
+      "reportKey": {
+        "name": "Taste: Fehler melden (beim Hovern)",
+        "description": "Über einem Item drücken, um eine Fehlermeldung zu starten"
+      },
+      "panelEnabled": {
+        "name": "Info-Panel im Auktionshaus",
+        "description": "Zeigt neben dem Auktionshaus-Fenster Tasten, Farblegende, Befehle und Status des Addons."
+      },
+      "panelSide": {
+        "name": "Panel-Seite",
+        "description": "Seite neben dem Fenster. Fehlt dort der Platz, wechselt das Panel automatisch auf die andere Seite.",
+        "entries": {
+          "right": "Rechts",
+          "left": "Links"
+        }
+      },
+      "panelKeys": {
+        "name": "Panel: Tasten"
+      },
+      "panelLegend": {
+        "name": "Panel: Farblegende"
+      },
+      "panelCommands": {
+        "name": "Panel: Befehle"
+      },
+      "panelStatus": {
+        "name": "Panel: Status"
+      },
       "highlightReminder": {
         "name": "Slots mit Timer einfärben"
       },
@@ -84,6 +116,9 @@
         },
         "reminder": {
           "name": "Auktions-Erinnerung"
+        },
+        "panel": {
+          "name": "Info-Panel"
         },
         "highlight": {
           "name": "Slot-Farben"
@@ -137,6 +172,44 @@
         "none": "Keine Erinnerungen aktiv.",
         "entry": "• %s – endet %s, Erinnerung %s",
         "usage": "Benutzung: /aht list | /aht clear | /aht sammeln"
+      },
+      "panel": {
+        "keys": "Tasten",
+        "keyReminder": "Erinnerung",
+        "keyReport": "Fehler melden",
+        "unbound": "nicht belegt",
+        "legend": "Farblegende",
+        "legendFake": "Fälschung",
+        "legendEgg": "Falsch benanntes Spawn-Ei",
+        "legendReal": "Echt (grüne Zeile)",
+        "legendTimer": "Timer gesetzt",
+        "legendBid": "Eigenes Gebot",
+        "legendBoth": "Gebot und Timer",
+        "commands": "Befehle",
+        "cmdList": "Erinnerungen anzeigen",
+        "cmdClear": "Erinnerungen löschen",
+        "cmdCollect": "Sammelmodus an/aus",
+        "status": "Status",
+        "statusReminders": "Erinnerungen",
+        "statusCollect": "Sammelmodus",
+        "statusVersion": "Addon-Version",
+        "none": "keine",
+        "next": "(nächste in %s Min.)",
+        "on": "an",
+        "off": "aus"
+      },
+      "report": {
+        "prompt": "Was ist bei „%s“ falsch?",
+        "btnReal": "Echtes Item als Fake markiert",
+        "btnMissed": "Fake nicht erkannt",
+        "btnCancel": "Abbrechen",
+        "sent": "Meldung gesendet, danke!",
+        "failed": "Die Meldung konnte nicht gesendet werden (%s). Bitte versuche es später noch einmal.",
+        "cooldown": "Bitte warte noch %s Sekunden bis zur nächsten Meldung.",
+        "duplicate": "Dieses Item hast du in dieser Sitzung schon gemeldet.",
+        "expired": "Die Auswahl ist abgelaufen. Drücke die Taste erneut über dem Item.",
+        "cancelled": "Meldung abgebrochen.",
+        "disabledBuild": "Fehlermeldungen sind in diesem Build deaktiviert."
       },
       "collect": {
         "on": "Sammelmodus AN – gesehene Auktions-Items werden lokal gespeichert in: %s",

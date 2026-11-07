@@ -79,6 +79,32 @@ public class SigGuardConfiguration extends AddonConfig {
   @SwitchSetting
   private final ConfigProperty<Boolean> reminderHint = new ConfigProperty<>(true);
 
+  @SwitchSetting
+  private final ConfigProperty<Boolean> reportEnabled = new ConfigProperty<>(true);
+
+  @KeyBindSetting
+  private final ConfigProperty<Key> reportKey = new ConfigProperty<>(Key.K);
+
+  // --- Info-Panel neben dem Auktionshaus ---
+  @SettingSection("panel")
+  @SwitchSetting
+  private final ConfigProperty<Boolean> panelEnabled = new ConfigProperty<>(true);
+
+  @DropdownSetting
+  private final ConfigProperty<PanelSide> panelSide = new ConfigProperty<>(PanelSide.RIGHT);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> panelKeys = new ConfigProperty<>(true);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> panelLegend = new ConfigProperty<>(true);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> panelCommands = new ConfigProperty<>(true);
+
+  @SwitchSetting
+  private final ConfigProperty<Boolean> panelStatus = new ConfigProperty<>(true);
+
   // --- Slot-Farben im Auktionshaus ---
   @SettingSection("highlight")
   @SwitchSetting
@@ -172,6 +198,38 @@ public class SigGuardConfiguration extends AddonConfig {
     return this.reminderKey;
   }
 
+  public ConfigProperty<Boolean> reportEnabled() {
+    return this.reportEnabled;
+  }
+
+  public ConfigProperty<Key> reportKey() {
+    return this.reportKey;
+  }
+
+  public ConfigProperty<Boolean> panelEnabled() {
+    return this.panelEnabled;
+  }
+
+  public ConfigProperty<PanelSide> panelSide() {
+    return this.panelSide;
+  }
+
+  public ConfigProperty<Boolean> panelKeys() {
+    return this.panelKeys;
+  }
+
+  public ConfigProperty<Boolean> panelLegend() {
+    return this.panelLegend;
+  }
+
+  public ConfigProperty<Boolean> panelCommands() {
+    return this.panelCommands;
+  }
+
+  public ConfigProperty<Boolean> panelStatus() {
+    return this.panelStatus;
+  }
+
   public ConfigProperty<Integer> reminderLeadMinutes() {
     return this.reminderLeadMinutes;
   }
@@ -194,6 +252,12 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Color> bidColor() {
     return this.bidColor;
+  }
+
+  /** Seite des Info-Panels neben dem Auktionshaus-Fenster. */
+  public enum PanelSide {
+    RIGHT,
+    LEFT
   }
 
   /** Sprache der Addon-Meldungen: Deutsch, Englisch oder wie das Spiel. */

@@ -12,10 +12,10 @@ import net.labymod.api.event.client.render.item.ItemDecorationRenderEvent;
  */
 public class SlotFrameListener {
 
-  private static final int RED = 0xFF_FF_20_20;
-  private static final int ORANGE = 0xFF_FF_90_10;
+  static final int RED = 0xFF_FF_20_20;
+  static final int ORANGE = 0xFF_FF_90_10;
+  static final float FRAME_WIDTH = 2F;
   private static final float SLOT_SIZE = 16F;
-  private static final float FRAME_WIDTH = 2F;
 
   private final SigGuardAddon addon;
   private final ItemSignatureService service;
