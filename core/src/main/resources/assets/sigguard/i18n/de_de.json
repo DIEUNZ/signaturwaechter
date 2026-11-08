@@ -142,6 +142,7 @@
         "icedOut": "FÄLSCHUNG – Iced Out ohne Verzauberung",
         "chatIcedOut": "%s: Iced Out ohne Verzauberung, vermutlich gefälscht",
         "adminText": "FÄLSCHUNG – Admin-Text ohne echte Signatur",
+        "enchantInName": "FÄLSCHUNG – Verzauberung steht im Itemnamen",
         "signatureInName": "FÄLSCHUNG – Signatur steht im Itemnamen",
         "codeAbove": "FÄLSCHUNG – Code steht über der Signatur",
         "titleMismatch": "FÄLSCHUNG – das echte Item heißt „%s“",

@@ -77,6 +77,11 @@ public record ItemFingerprint(
     return !lines.isEmpty() && lines.get(0).toLowerCase(Locale.ROOT).contains("signiert von");
   }
 
+  /** Im Itemnamen steht eine vorgetäuschte Verzauberung wie "Schärfe enchantment.level.50". */
+  public static boolean enchantmentInName(List<String> lines) {
+    return !lines.isEmpty() && lines.get(0).toLowerCase(Locale.ROOT).contains("enchantment.level");
+  }
+
   /**
    * Bei Fälschungen steht die zufällige Kennung über der Signatur-Zeile, bei Originalen
    * darunter.

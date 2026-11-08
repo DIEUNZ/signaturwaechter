@@ -48,6 +48,12 @@ class ItemCatalogTest {
   }
 
   @Test
+  void enchantmentInsideItemNameIsDetected() {
+    assertTrue(ItemFingerprint.enchantmentInName(List.of("Schärfe enchantment.level.50", "░")));
+    assertFalse(ItemFingerprint.enchantmentInName(List.of("Schwert", "Schärfe enchantment.level.5")));
+  }
+
+  @Test
   void signatureInsideItemNameIsDetected() {
     assertTrue(ItemFingerprint.signatureInName(List.of(
         "Supreme-Rang (Item) Signiert von AbgegrieftHD am 23.05.2024", "░░░")));
