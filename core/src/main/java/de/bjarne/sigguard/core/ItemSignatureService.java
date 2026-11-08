@@ -130,6 +130,9 @@ public class ItemSignatureService {
    * @return Meldung (Schlüssel und Argument) oder {@code null}, wenn nichts auffällt
    */
   public static Forgery forgery(List<String> plain, Optional<Check> check) {
+    if (ItemFingerprint.signatureInName(plain)) {
+      return new Forgery("warning.signatureInName", "");
+    }
     if (check.isPresent() && ItemFingerprint.codeAboveSignature(plain)) {
       return new Forgery("warning.codeAbove", "");
     }

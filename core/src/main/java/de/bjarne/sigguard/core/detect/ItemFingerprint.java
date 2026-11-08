@@ -72,6 +72,11 @@ public record ItemFingerprint(
     return name.replaceAll("\\d+", "#").replaceAll("en$", "e");
   }
 
+  /** Eine echte Signatur steht in einer eigenen Zeile, nie im Itemnamen (Zeile 0). */
+  public static boolean signatureInName(List<String> lines) {
+    return !lines.isEmpty() && lines.get(0).toLowerCase(Locale.ROOT).contains("signiert von");
+  }
+
   /**
    * Bei Fälschungen steht die zufällige Kennung über der Signatur-Zeile, bei Originalen
    * darunter.

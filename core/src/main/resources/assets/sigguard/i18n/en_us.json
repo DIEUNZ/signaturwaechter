@@ -142,6 +142,7 @@
         "icedOut": "FAKE - Iced Out without enchantment",
         "chatIcedOut": "%s: Iced Out without enchantment, probably fake",
         "adminText": "FAKE - admin text without genuine signature",
+        "signatureInName": "FAKE - signature is part of the item name",
         "codeAbove": "FAKE - code is above the signature",
         "titleMismatch": "FAKE - the real item is called \"%s\"",
         "chatAdminText": "%s: text or layout do not match a genuine admin item",

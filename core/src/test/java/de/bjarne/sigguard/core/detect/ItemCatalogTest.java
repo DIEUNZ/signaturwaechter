@@ -48,6 +48,14 @@ class ItemCatalogTest {
   }
 
   @Test
+  void signatureInsideItemNameIsDetected() {
+    assertTrue(ItemFingerprint.signatureInName(List.of(
+        "Supreme-Rang (Item) Signiert von AbgegrieftHD am 23.05.2024", "░░░")));
+    assertFalse(ItemFingerprint.signatureInName(List.of("Supreme-Rang (Item)", "Text",
+        "Signiert von AbgegrieftHD am 23.05.2024")));
+  }
+
+  @Test
   void codeAboveSignatureIsDetected() {
     assertTrue(ItemFingerprint.codeAboveSignature(List.of("Item", "Text",
         "MH0M3YIS70pzVsQ1", "Signiert von AbgegrieftHD am 13.09.2019")));
