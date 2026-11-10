@@ -15,6 +15,7 @@ import java.util.Optional;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
+import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Phase;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.lifecycle.GameTickEvent;
@@ -113,7 +114,11 @@ public class ReminderManager {
         .title(Messages.tr("reminder.title", NamedTextColor.WHITE))
         .text(text)
         .build());
-    Laby.labyAPI().minecraft().sounds().playSound(VersionCompat.REMINDER_SOUND, 1F, 1F);
+    ResourceLocation sound = VersionCompat.sound(this.addon.configuration().reminderSound().get());
+    if (sound != null) {
+      Laby.labyAPI().minecraft().sounds().playSound(sound,
+          this.addon.configuration().reminderVolume().get() / 100F, 1F);
+    }
   }
 
   public static String format(long epochMillis) {

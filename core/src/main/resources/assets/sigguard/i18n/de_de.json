@@ -61,6 +61,21 @@
       "reminderLeadMinutes": {
         "name": "Minuten vor Ablauf erinnern"
       },
+      "reminderSound": {
+        "name": "Ton der Erinnerung",
+        "description": "Ton, der bei einer fälligen Auktions-Erinnerung abgespielt wird.",
+        "entries": {
+          "pling": "Pling",
+          "xp": "Erfahrungskugel",
+          "levelup": "Level-Up",
+          "villager": "Dorfbewohner",
+          "off": "Kein Ton"
+        }
+      },
+      "reminderVolume": {
+        "name": "Lautstärke der Erinnerung",
+        "description": "0 bis 100 Prozent"
+      },
       "reminderHint": {
         "name": "Timer im Tooltip vorschlagen",
         "description": "Zeigt bei Auktionen an, mit welcher Taste du eine Erinnerung setzt"

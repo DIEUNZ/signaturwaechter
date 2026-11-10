@@ -76,6 +76,13 @@ public class SigGuardConfiguration extends AddonConfig {
   @SliderSetting(min = 0, max = 30)
   private final ConfigProperty<Integer> reminderLeadMinutes = new ConfigProperty<>(2);
 
+  @DropdownSetting
+  private final ConfigProperty<ReminderSound> reminderSound =
+      new ConfigProperty<>(ReminderSound.PLING);
+
+  @SliderSetting(min = 0, max = 100)
+  private final ConfigProperty<Integer> reminderVolume = new ConfigProperty<>(100);
+
   @SwitchSetting
   private final ConfigProperty<Boolean> reminderHint = new ConfigProperty<>(true);
 
@@ -234,6 +241,14 @@ public class SigGuardConfiguration extends AddonConfig {
     return this.reminderLeadMinutes;
   }
 
+  public ConfigProperty<ReminderSound> reminderSound() {
+    return this.reminderSound;
+  }
+
+  public ConfigProperty<Integer> reminderVolume() {
+    return this.reminderVolume;
+  }
+
   public ConfigProperty<Boolean> reminderHint() {
     return this.reminderHint;
   }
@@ -252,6 +267,15 @@ public class SigGuardConfiguration extends AddonConfig {
 
   public ConfigProperty<Color> bidColor() {
     return this.bidColor;
+  }
+
+  /** Ton der Auktions-Erinnerung. */
+  public enum ReminderSound {
+    PLING,
+    XP,
+    LEVELUP,
+    VILLAGER,
+    OFF
   }
 
   /** Seite des Info-Panels neben dem Auktionshaus-Fenster. */

@@ -61,6 +61,21 @@
       "reminderLeadMinutes": {
         "name": "Remind minutes before end"
       },
+      "reminderSound": {
+        "name": "Reminder sound",
+        "description": "Sound played when an auction reminder is due.",
+        "entries": {
+          "pling": "Pling",
+          "xp": "Experience orb",
+          "levelup": "Level up",
+          "villager": "Villager",
+          "off": "No sound"
+        }
+      },
+      "reminderVolume": {
+        "name": "Reminder volume",
+        "description": "0 to 100 percent"
+      },
       "reminderHint": {
         "name": "Suggest timer in tooltip",
         "description": "Shows on auctions which key sets a reminder"

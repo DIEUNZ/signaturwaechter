@@ -22,6 +22,21 @@ public final class VersionCompat {
           : MinecraftVersions.V1_9.orNewer() ? "block.note.pling"
               : "note.pling");
 
+  /** Ton für die Erinnerung ({@code null} = aus); die Namen unterscheiden sich je Version. */
+  public static ResourceLocation sound(SigGuardConfiguration.ReminderSound sound) {
+    boolean modern = MinecraftVersions.V1_9.orNewer();
+    return switch (sound) {
+      case PLING -> REMINDER_SOUND;
+      case XP -> ResourceLocation.create("minecraft",
+          modern ? "entity.experience_orb.pickup" : "random.orb");
+      case LEVELUP -> ResourceLocation.create("minecraft",
+          modern ? "entity.player.levelup" : "random.levelup");
+      case VILLAGER -> ResourceLocation.create("minecraft",
+          modern ? "entity.villager.yes" : "mob.villager.yes");
+      case OFF -> null;
+    };
+  }
+
   private VersionCompat() {
   }
 }
