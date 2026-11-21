@@ -27,19 +27,22 @@ tasks.named<JavaCompile>("compileTestJava") {
     options.compilerArgs.add("-proc:none")
 }
 
-// Webhook-URL für "Fehler melden": nur aus Gradle-Property bzw. Umgebungsvariable, nie im Quelltext.
-// Ohne Wert bleibt die Konstante leer und das Feature ist in diesem Build deaktiviert.
-val webhookUrl = providers.gradleProperty("ahtWebhookUrl")
-    .orElse(providers.environmentVariable("AHT_WEBHOOK_URL"))
+// Melde-URL für "Fehler melden": die öffentliche Adresse des Proxys (report-proxy/), nie die
+// Discord-Webhook-URL, denn alles im JAR ist für jeden lesbar. Ohne Wert ist das Feature aus.
+val reportUrl = providers.gradleProperty("ahtReportUrl")
+    .orElse(providers.environmentVariable("AHT_REPORT_URL"))
     .orElse("")
 val generatedDir = layout.buildDirectory.dir("generated/buildconfig")
 
 val generateBuildConfig = tasks.register("generateBuildConfig") {
-    val url = webhookUrl
+    val url = reportUrl
     val out = generatedDir
-    inputs.property("webhookUrl", url)
+    inputs.property("reportUrl", url)
     outputs.dir(out)
     doLast {
+        if (url.get().contains("/api/webhooks/")) {
+            throw GradleException("ahtReportUrl ist eine Discord-Webhook-URL; sie gehört nur in den Proxy")
+        }
         val escaped = url.get().trim().replace("\\", "\\\\").replace("\"", "\\\"")
         val file = out.get().file("de/bjarne/sigguard/core/BuildConfig.java").asFile
         file.parentFile.mkdirs()
@@ -47,7 +50,7 @@ val generateBuildConfig = tasks.register("generateBuildConfig") {
             "package de.bjarne.sigguard.core;\n\n" +
                 "/** Vom Build erzeugt, nicht committen. */\n" +
                 "public final class BuildConfig {\n\n" +
-                "  public static final String WEBHOOK_URL = \"$escaped\";\n\n" +
+                "  public static final String REPORT_URL =\"$escaped\";\n\n" +
                 "  private BuildConfig() {\n  }\n}\n"
         )
     }

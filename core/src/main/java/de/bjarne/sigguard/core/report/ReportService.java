@@ -33,15 +33,14 @@ import net.labymod.api.nbt.tags.NBTTagCompound;
 
 /**
  * "Fehler melden": merkt sich das Item bei Tastendruck, zeigt eine Auswahl im Chat und sendet
- * die Meldung nach der Auswahl asynchron an einen Discord-Webhook. Gesendet wird nur auf
- * ausdrücklichen Klick; es gibt eine Wartezeit und jedes Item ist nur einmal meldbar.
+ * die Meldung nach der Auswahl asynchron an den Melde-Proxy (report-proxy/), der sie an Discord
+ * weiterleitet. Gesendet wird nur auf ausdrücklichen Klick; es gibt eine Wartezeit und jedes Item
+ * ist nur einmal meldbar (der Proxy drosselt zusätzlich serverseitig).
  */
 public class ReportService {
 
   private static final long COOLDOWN_MILLIS = 30_000;
   private static final long EXPIRE_MILLIS = 60_000;
-  private static final String WEBHOOK_PREFIX = "https://discord.com/api/webhooks/";
-  private static final String WEBHOOK_PREFIX_OLD = "https://discordapp.com/api/webhooks/";
   private static final HttpClient HTTP = HttpClient.newBuilder()
       .connectTimeout(Duration.ofSeconds(10)).build();
 
@@ -54,10 +53,9 @@ public class ReportService {
     this.addon = addon;
   }
 
-  /** Nur Discord-Webhook-URLs gelten; leer (kein Secret beim Build) heißt deaktiviert. */
+  /** Nur HTTPS-Adressen gelten; leer (keine Melde-URL beim Build) heißt deaktiviert. */
   public static boolean available() {
-    return BuildConfig.WEBHOOK_URL.startsWith(WEBHOOK_PREFIX)
-        || BuildConfig.WEBHOOK_URL.startsWith(WEBHOOK_PREFIX_OLD);
+    return BuildConfig.REPORT_URL.startsWith("https://");
   }
 
   /** Taste gedrückt: Item merken und die Auswahl im Chat anzeigen. */
@@ -136,7 +134,7 @@ public class ReportService {
         kind.equals("echt") ? "Echtes Item als Fake markiert" : "Fake nicht erkannt", machine,
         snapshot.itemName(), snapshot.lore(), snapshot.nbt(), snapshot.verdict(), addonVersion,
         minecraftVersion, Laby.labyAPI().getName(), Instant.now());
-    HttpRequest request = HttpRequest.newBuilder(URI.create(BuildConfig.WEBHOOK_URL))
+    HttpRequest request = HttpRequest.newBuilder(URI.create(BuildConfig.REPORT_URL))
         .timeout(Duration.ofSeconds(15))
         .header("Content-Type", "application/json")
         .POST(BodyPublishers.ofString(body.toString(), StandardCharsets.UTF_8))

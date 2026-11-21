@@ -1,0 +1,14 @@
+# Deploy: npx wrangler deploy  (im Ordner report-proxy)
+# Secret einmalig setzen:  npx wrangler secret put WEBHOOK_URL
+name = "ah-fake-warner-report"
+main = "worker.js"
+compatibility_date = "2025-06-01"
+
+# shortcut: Cloudflare-Rate-Limit zählt pro Standort und nur ungefähr, für ein Tageslimit KV oder Durable Object nutzen
+[[ratelimits]]
+name = "REPORT_LIMIT"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 2
+  period = 60

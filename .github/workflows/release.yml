@@ -42,7 +42,7 @@ jobs:
           echo "VERSION=${BASE}.${NEXT}" >> "$GITHUB_ENV"
       - name: Bauen und testen
         env:
-          AHT_WEBHOOK_URL: ${{ secrets.AHT_WEBHOOK_URL }}
+          AHT_REPORT_URL: ${{ secrets.AHT_REPORT_URL }}
         run: ./gradlew build createReleaseJar --full-stacktrace
       - name: Release veröffentlichen
         env:
