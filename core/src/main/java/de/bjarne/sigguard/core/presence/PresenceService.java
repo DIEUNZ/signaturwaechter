@@ -61,6 +61,7 @@ public class PresenceService {
     }
 
     long now = System.currentTimeMillis();
+    this.seen.values().removeIf(last -> now - last > EXPIRE_MILLIS);
     if (now - this.lastSent < SEND_INTERVAL_MILLIS || !this.onGrieferGames()) {
       return;
     }
