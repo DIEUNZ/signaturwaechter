@@ -39,19 +39,34 @@ public class ItemSignatureService {
 
   private SignatureDetector detector;
   private SignatureExtractor extractor;
-  private String settingsKey = "";
+  // Wird von den Änderungs-Listenern der Einstellungen gesetzt (kein Vergleich pro Frame)
+  private volatile boolean settingsChanged = true;
+  private volatile int settingsVersion;
 
   // Verhindert, dass unsere eigene Tooltip-Abfrage den Tooltip-Listener erneut auslöst
   private boolean computingLines;
 
   public ItemSignatureService(SigGuardConfiguration config) {
     this.config = config;
+    config.whitelist().addChangeListener(() -> this.settingsChanged = true);
+    config.threshold().addChangeListener(() -> this.settingsChanged = true);
+    config.signaturePattern().addChangeListener(() -> this.settingsChanged = true);
+  }
+
+  /** Zählt hoch, wenn Detector und Extractor neu gebaut wurden (Zwischenspeicher ungültig). */
+  public int settingsVersion() {
+    this.refreshIfSettingsChanged();
+    return this.settingsVersion;
   }
 
   /** Prüft fertige Tooltip-Zeilen (aus dem Tooltip-Event). */
   public Optional<Check> check(List<Component> lines) {
+    return this.checkPlain(toPlain(lines));
+  }
+
+  /** Wie {@link #check(List)}, aber mit bereits umgewandeltem Klartext (spart die Umwandlung). */
+  public Optional<Check> checkPlain(List<String> plain) {
     this.refreshIfSettingsChanged();
-    List<String> plain = toPlain(lines);
     return this.extractor.extract(plain)
         .map(signature -> new Check(signature, this.detector.detect(signature.name()), plain));
   }
@@ -166,14 +181,12 @@ public class ItemSignatureService {
 
   // Detector und Extractor neu bauen, wenn sich relevante Settings geändert haben
   private void refreshIfSettingsChanged() {
-    String key = this.config.whitelist().get() + '\u0000'
-        + this.config.threshold().get() + '\u0000'
-        + this.config.signaturePattern().get();
-    if (this.detector != null && key.equals(this.settingsKey)) {
+    if (this.detector != null && !this.settingsChanged) {
       return;
     }
 
-    this.settingsKey = key;
+    this.settingsChanged = false;
+    this.settingsVersion++;
     this.detector = new SignatureDetector(this.config.whitelistNames(), this.config.threshold().get());
     this.extractor = new SignatureExtractor(this.config.signaturePattern().get());
     this.slotCache.clear();

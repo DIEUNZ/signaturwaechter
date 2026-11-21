@@ -20,6 +20,7 @@ public final class AuctionTooltipParser {
   // zeigt "Dein Gebotslimit", sobald man geboten hat
   private static final List<String> OWN_BID_MARKERS =
       List.of("du bist aktuell höchstbietender", "dein gebotslimit");
+  private static final Pattern LEADING_COLON = Pattern.compile("^\\s*:");
   private static final Pattern TIME_PART = Pattern.compile(
       "(\\d+)\\s*(tage?|d|stunden?|std|h|minuten?|min|m|sekunden?|sek|s)\\b");
 
@@ -98,7 +99,7 @@ public final class AuctionTooltipParser {
         continue;
       }
 
-      String rest = line.substring(index + label.length()).replaceFirst("^\\s*:", "").strip();
+      String rest = LEADING_COLON.matcher(line.substring(index + label.length())).replaceFirst("").strip();
       if (!rest.isEmpty()) {
         return Optional.of(rest);
       }

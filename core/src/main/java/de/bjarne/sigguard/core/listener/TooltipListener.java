@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.Map;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.key.Key;
@@ -35,6 +37,11 @@ import net.labymod.api.event.client.world.ItemStackTooltipEvent;
 public class TooltipListener {
 
   private static final int MAX_WARNED = 500;
+  // Das Tooltip-Event kommt jeden Frame; das Ergebnis pro Item gilt nur kurz und neu bei
+  // geänderten Einstellungen (wie beim Slot-Cache im Service)
+  private static final long CACHE_MILLIS = 500;
+
+  private final Map<ItemStack, Cached> cache = Collections.synchronizedMap(new WeakHashMap<>());
 
   private final SigGuardAddon addon;
   private final ItemSignatureService service;
@@ -52,13 +59,23 @@ public class TooltipListener {
     }
 
     List<Component> lines = event.getTooltipLines();
-    List<String> plain = ItemSignatureService.toPlain(lines);
+    long now = System.currentTimeMillis();
+    Cached cached = this.cache.get(event.itemStack());
+    if (cached != null && cached.version() == this.service.settingsVersion()
+        && now - cached.computedAt() < CACHE_MILLIS) {
+      lines.addAll(cached.additions());
+      this.addon.hoverTracker().update(event.itemStack(), cached.plain(), cached.rawLines(),
+          cached.verdict(), cached.codes(), cached.signer(), cached.signature());
+      return;
+    }
+
+    List<String> plain = List.copyOf(ItemSignatureService.toPlain(lines));
     List<Component> rawLines = List.copyOf(lines);
 
     int sizeBeforeChecks = lines.size();
     // Sprachunabhängige Kürzel für die Fehlermeldung (maschinenlesbare Zeile)
     List<String> codes = new ArrayList<>();
-    Optional<Check> check = this.service.check(lines);
+    Optional<Check> check = this.service.checkPlain(plain);
     if (check.isPresent() && check.get().result().verdict().isWarning()) {
       codes.add("signature:" + check.get().result().verdict().name());
       lines.add(Component.empty());
@@ -122,11 +139,22 @@ public class TooltipListener {
     List<String> verdict = new ArrayList<>(
         ItemSignatureService.toPlain(lines.subList(sizeBeforeChecks, lines.size())));
     verdict.removeIf(String::isBlank);
-    this.addon.hoverTracker().update(event.itemStack(), plain, rawLines, verdict, codes,
-        check.map(value -> value.signature().name()).orElse(null),
-        check.map(value -> value.result().verdict().name()).orElse("KEINE_SIGNATUR"));
+    String signer = check.map(value -> value.signature().name()).orElse(null);
+    String signature = check.map(value -> value.result().verdict().name())
+        .orElse("KEINE_SIGNATUR");
+    this.addon.hoverTracker().update(event.itemStack(), plain, rawLines, verdict, codes, signer,
+        signature);
 
     this.addReminderHint(lines, plain);
+    this.cache.put(event.itemStack(), new Cached(this.service.settingsVersion(), now,
+        List.copyOf(lines.subList(sizeBeforeChecks, lines.size())), plain, rawLines,
+        List.copyOf(verdict), List.copyOf(codes), signer, signature));
+  }
+
+  /** Zwischengespeichertes Ergebnis: die angehängten Zeilen und was der HoverTracker braucht. */
+  private record Cached(int version, long computedAt, List<Component> additions,
+                        List<String> plain, List<Component> rawLines, List<String> verdict,
+                        List<String> codes, String signer, String signature) {
   }
 
   // Sammelmodus: Fingerabdruck jedes gesehenen Auktions-Items festhalten
