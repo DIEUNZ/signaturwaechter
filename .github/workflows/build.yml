@@ -23,8 +23,12 @@ jobs:
           validate-wrappers: true
           cache-read-only: ${{ github.ref != format('refs/heads/{0}', github.event.repository.default_branch) }}
       - name: Build with Gradle
+        env:
+          AHT_REPORT_URL: ${{ secrets.AHT_REPORT_URL }}
         run: ./gradlew build --full-stacktrace
       - name: Create Release Artifact
+        env:
+          AHT_REPORT_URL: ${{ secrets.AHT_REPORT_URL }}
         run: ./gradlew createReleaseJar
       - name: Upload Artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
